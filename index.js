@@ -69,6 +69,14 @@ client.on('message', msg => {
 					}
 				}
 
+				if(msg.content.includes("spoiler:"))
+				{
+					if(msg.content.startsWith("spoiler:"))
+					{
+						miscCom.spoiler(msg);
+					}
+				}
+
 				else if(msg.content.includes("/zalgo "))
 				{
 					miscCom.zalgo(msg);

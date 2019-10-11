@@ -8,6 +8,7 @@ module.exports.setLastChannel = setLastChannel;
 module.exports.handleImageSearch = handleImageSearch;
 module.exports.zalgo = zalgo;
 module.exports.findNWords = findNWords;
+module.exports.spoiler = spoiler;
 
 var LASTCHANNEL = "";
 
@@ -137,6 +138,21 @@ function zalgo(mesg) {
         }
     }
     mesg.channel.send(newMessage);
+    mesg.delete()
+        .then(msg => console.log(`Deleted message from ${msg.author.username}`))
+        .catch(console.error);
+}
+
+function spoiler(mesg)
+{
+    var messageResponse = "";
+    var messageContent = mesg.content.split('spoiler: ')[1];
+    for(i = 0; i < messageContent.length; i++)
+    {
+        var char = messageContent[i];
+        messageResponse += '||' + char + '||';
+    }
+    mesg.channel.send(messageResponse);
     mesg.delete()
         .then(msg => console.log(`Deleted message from ${msg.author.username}`))
         .catch(console.error);
