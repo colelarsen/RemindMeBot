@@ -173,10 +173,11 @@ function handleImageSearch(msgContent) {
     var client = new GoogleImages('001240387052449260152:yrizystafyw', 'AIzaSyA2U3DQF9AHMofsy2CtoP035jg-S1BP6Yc');
     client.search(sniff)
         .then(images => {
+            let index = Math.round(Math.random()*images.length);
             var embed = new Discord.RichEmbed()
                 .setColor(3447003)
                 .setTitle(sniff)
-                .setImage(images[0].url)
+                .setImage(images[index].url)
                 .setDescription(" ");
             LASTCHANNEL.send(embed);
         })
