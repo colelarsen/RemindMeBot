@@ -1,21 +1,23 @@
-var messageChannel = '428950203144470528'; //General
-//var messageChannel = '521434157193232392'; //Bot Testing
 
-const Discord = require('discord.js');
-var LocalStorage = require('node-localstorage').LocalStorage,
-localStorage = new LocalStorage('./scratch');
-const config = require('./config.js');
+const axios = require('axios');
+
+class Reminder {
+    constructor(info, timestamp, username, userID, attachment, key) {
+        this.info = info;
+        this.timestamp = timestamp;
+        this.username = username;
+        this.userID = userID;
+        this.attachment = attachment;
+        this.key = key;
+    }
+}
 
 
 
 module.exports.checkTimes = checkTimes;
-module.exports.clearReminders = clearReminders;
-module.exports.removeReminder = removeReminder;
 module.exports.listReminders = listReminders;
 module.exports.findDateTimestamp = findDateTimestamp;
 module.exports.remindMeStart = remindMeStart;
-module.exports.remindFriendStart = remindFriendStart;
-
 module.exports.setLastChannel = setLastChannel;
 
 
@@ -26,106 +28,102 @@ module.exports.setLastChannel = setLastChannel;
 */
 var LASTCHANNEL = "";
 
-function setLastChannel(last)
-{
+function setLastChannel(last) {
     LASTCHANNEL = last;
 }
 
-//Clears all reminders
-function clearReminders()
-{
-    localStorage.clear();
-    return "All reminders were cleared."
+// http://remindmehome.com/reminders
+
+async function getAllReminders() {
+    try {
+        let data = await axios.get("http://remindmehome.com/reminders");
+        let keys = Object.keys(data.data);
+        let reminders = keys.map((key) => {
+            let remObj = data.data[key];
+            return new Reminder(remObj.info, remObj.timestamp, remObj.username, remObj.userID, remObj.attachment, key);
+        });        
+        return reminders;
+    }
+    catch (err) {
+        console.log(err);
+    }
 }
 
-function removeReminder(indexString)
-{
-    var index = (indexString.split("remove reminder ")[1]) - 1;
-    localStorage.removeItem(localStorage.key(index));
-    return "Removed reminder " + (index+1);
+async function storeReminder(reminder) {
+    try {
+        let response = await axios.post("http://remindmehome.com/reminders", reminder);
+        if (response.message == "success") {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    catch (err) {
+        return true;
+    }
+}
+
+async function deleteReminder(reminder)
+{    
+    try {
+        // console.log(reminder); 
+        let url = "http://remindmehome.com/reminders/delete";
+        let response = await axios.post(url, reminder);
+        if (response.message == "success") {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    catch (err) {
+        // console.log(err);
+        
+        return true;
+    }
 }
 
 //Lists all the reminders
-function listReminders()
-{
+async function listReminders() {
     var response = "";
-    var i;
-    for(i = 0; i < localStorage.length; i++)
-    {
-        var inStorage = localStorage.getItem(localStorage.key(i));
-        if(inStorage != null)
-        {
-            console.log("TIMESTAMP IN STORAGE: " + inStorage.split("@@%^$@%&")[0])
-            date = new Date(inStorage.split("@@%^$@%&")[0] - 0);
-
-            var info = inStorage.split("@@%^$@%&")[1].split("\nATTCH")[0];
-            response += "\n" + (i+1) + ": " + date.toString() + ": " + info;
-        }
-    }
+    var reminders = await getAllReminders();
+    reminders.forEach((reminder) => {
+        var date = new Date(reminder.timestamp);
+        var info = reminder.info;
+        response += "\n" + date.toString() + ": " + info;
+    });
     return response;
 }
 
+
 //Taken an incoming message and the Author and returns a response
-function remindMeStart(incomingMessage, userTag, attachment, authorName)
-{
-    try{
+async function remindMeStart(incomingMessage, userTag, attachment, authorName) {
+    try {
         var messageLowerCase = incomingMessage.toLowerCase();
         var split = messageLowerCase.split("remind me: ");
-        var timeStyle = split[1].split("@@")[0];
-        var timestamp = findTimestamp(timeStyle)        
+
+        var timestamp = findTimestamp(split[1].split("@@")[0]);
         var info = incomingMessage.split("@@")[1];
-        if(attachment.length > 0)
-        {
-             info += "\nATTCH" + attachment;
+        var username = authorName;
+        var userID = "<@" + userTag + ">";
+        var reminder = new Reminder(info, timestamp, username, userID, attachment);
+        if (attachment.length > 0) {
+            reminder.attachment = attachment;
         }
-
-        var localLength = localStorage.length;
-
-        localStorage.setItem(localLength, "" + timestamp + "@@%^$@%&" + " <@" + userTag + "> " + info);
-        storeData(timestamp, authorName, " <@" + userTag + ">",  info);
-	return "I will remind you\n" + info.split("\nATTCH")[0] + " \nIn " + timeStyle;
-}
-    catch(err) {
-        console.log(err.message);
-        return "Sorry there was an error";
-      }
-}
-
-//Remind a friend
-function remindFriendStart(incomingMessage, mentions, attachment, authorName)
-{
-    try {      
-        var messageLowerCase = incomingMessage.toLowerCase();
-        var split = messageLowerCase.split(": ");
-        var timeStyle = split[1].split("@@")[0];
-        var info = incomingMessage.split("@@")[1];
-        if(attachment.length > 0)
-        {
-             info += "\nATTCH" + attachment;
+        let result = await storeReminder(reminder);
+        if(result){
+            return "I will remind you\n" + info.split("\nATTCH")[0] + " \nIn " + timeStyle;
         }
-        var localLength = localStorage.length;
-        var timestamp = findTimestamp(timeStyle)  
-        var userTags = "";
-	var userNames = "";
-        mentions.forEach(element => {
-	    if(element.id != client.user.id)
-	    {
-            	userTags += "<@" + element.id + ">" + " ";
-            	userNames += element.username;
-            }
-	});
-        storeData(timestamp, authorName, userNames,  info);
-        localStorage.setItem(localLength, "" + timestamp + "@@%^$@%&" + userTags + " " + info);
-        return "I will remind " + userTags + "\n" + info.split("\nATTCH")[0] + "\nIn " + timeStyle;
+        else {
+            // return "Sorry there was an error";
+        }
     }
-catch(err) {
-    console.log(err.message);
-    return "Sorry there was an error";
-  }
+    catch (err) {
+        console.log(err.message);
+        // return "Sorry there was an error";
+    }
 }
-
-
-
 
 
 
@@ -140,55 +138,20 @@ catch(err) {
         -------------------------------------------------
 */
 //Check the time for each entry in storage
-function checkTimes() {
-    var i;
-    try
-	{
-			for(i = 0; i < localStorage.length; i++)
-			{
-				var inStorage = localStorage.getItem(localStorage.key(i));
-				if(inStorage != null)
-				{
-					var array = inStorage.split("@@%^$@%&");
-					var timeStamp = array[0];
-					var dateInfo = array[1];
-					if(Date.now() > timeStamp)
-					{
-						console.log(timeStamp + ":" + Date.now())
-						//Do the reminder
-						LASTCHANNEL.send(dateInfo);
-						localStorage.removeItem(localStorage.key(i));
-						return;
-					}
-				}
-			}
-	}
-	catch(error)
-	{
-		LASTCHANNEL.send('' + error);
-	}
+async function checkTimes() {
+    try {
+        let reminders = await getAllReminders();
+        reminders.forEach((reminder) => {            
+            if (Date.now() > reminder.timestamp) {
+                LASTCHANNEL.send(reminder.info);
+                deleteReminder(reminder);
+            }
+        });
+    }
+    catch (error) {
+        // LASTCHANNEL.send('' + error);
+    }
 }
-
-
-
-
-/*
-        -------------------------------------------------
-                DATABASE FUNCTIONS
-        -------------------------------------------------
-*/
-function storeData(timestamp, username, userID, text)
-{
-	var dates = config.database.child("reminders");
-	dates.push({
-	"info" : text,
-	"timestamp" : timestamp,
-	"username" : username,
-	"userID": userID
-	})
-}
-
-
 
 
 
@@ -197,71 +160,59 @@ function storeData(timestamp, username, userID, text)
                 HELPER FUNCTIONS
         -------------------------------------------------
 */
-function findTimestamp(incomingStr)
-{
+function findTimestamp(incomingStr) {
     var incomingString = incomingStr;
     var hasDate = false;
     var dateOfHasDate = 0;
-    if(incomingString.includes("/"))
-    {
+    if (incomingString.includes("/")) {
         hasDate = true;
         var spitArray = incomingString.split(" ");
         dateOfHasDate = findDateTimestamp(spitArray[0]);
-        incomingString = incomingStr.substring(spitArray[0].length+1);
+        incomingString = incomingStr.substring(spitArray[0].length + 1);
         //console.log("String split from date: " + incomingString);
     }
-    try
-    {
+    try {
         var addToTimestamp = 0;
         var timeArray = incomingString.split(" ");
         var i = 0;
-        for(i = 0; i < timeArray.length; i = i + 2)
-        {
-            if(timeArray[i] === "")
-            {
+        for (i = 0; i < timeArray.length; i = i + 2) {
+            if (timeArray[i] === "") {
                 break;
             }
             var number = timeArray[i];
-            var timeStyle = timeArray[i+1].toLowerCase();
-            if(timeStyle === "sec" || timeStyle === "seconds" || timeStyle === "second" || timeStyle === "secs")
-            {
+            var timeStyle = timeArray[i + 1].toLowerCase();
+            if (timeStyle === "sec" || timeStyle === "seconds" || timeStyle === "second" || timeStyle === "secs") {
                 addToTimestamp += 1000 * number;
             }
-            if(timeStyle === "hours" || timeStyle === "hour")
-            {
+            if (timeStyle === "hours" || timeStyle === "hour") {
                 addToTimestamp += 1000 * number * 60 * 60;
             }
-            if(timeStyle === "days" || timeStyle === "day")
-            {
+            if (timeStyle === "days" || timeStyle === "day") {
                 addToTimestamp += 1000 * number * 60 * 60 * 24;
             }
-            if(timeStyle === "week" || timeStyle === "weeks")
-            {
+            if (timeStyle === "week" || timeStyle === "weeks") {
                 addToTimestamp += 1000 * number * 60 * 60 * 24 * 7;
             }
-            if(timeStyle === "min" || timeStyle === "mins" || timeStyle === "minutes" || timeStyle === "minute")
-            {
+            if (timeStyle === "min" || timeStyle === "mins" || timeStyle === "minutes" || timeStyle === "minute") {
                 addToTimestamp += 1000 * number * 60;
             }
         }
-        
+
         var timestamp = Date.now() + addToTimestamp;
-        if(hasDate)
-        {
+        if (hasDate) {
             timestamp = dateOfHasDate + addToTimestamp;
-         //Convert to eastern from coordinated universal   
-         timestamp += 1000 * 60 * 60 * 5;
+            //Convert to eastern from coordinated universal   
+            timestamp += 1000 * 60 * 60 * 5;
             //console.log("Date and adding: " + timestamp);
         }
         return timestamp;
     }
-    catch(err) {
+    catch (err) {
         console.log(err.message);
         return 0;
-      }
+    }
 }
-function findDateTimestamp(incomingString)
-{
+function findDateTimestamp(incomingString) {
     date = new Date();
     date = Date.parse(incomingString);
     date = new Date(date);
