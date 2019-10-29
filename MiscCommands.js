@@ -7,7 +7,7 @@ module.exports.randomCaps = randomCaps;
 module.exports.setLastChannel = setLastChannel;
 module.exports.handleImageSearch = handleImageSearch;
 module.exports.zalgo = zalgo;
-module.exports.findNWords = findNWords;
+module.exports.findNWords;
 module.exports.spoiler = spoiler;
 
 var LASTCHANNEL = "";
