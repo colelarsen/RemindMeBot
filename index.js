@@ -78,7 +78,7 @@ client.on('message', msg => {
 				miscCom.zalgo(msg);
 			}
 			else if (msg.content.includes("/message ")) {
-				var dmChan = msg.author.createDM();
+				client.users.find(msg.author.id).createDM();
 				dmChan.then(chan => {
 					chan.send("Ok");
 				});
@@ -151,7 +151,7 @@ client.on('message', msg => {
 			}
 			else if (incomingMessage.includes("remind me:")) {
 				var respond = reminder.remindMeStart(msg.content, msg.author.id, attachment, msg.author.username);
-				//msg.reply(respond);
+				console.log(msg.author.id);
 			}
 		}
 	}
