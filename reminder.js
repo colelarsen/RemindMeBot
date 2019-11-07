@@ -106,7 +106,7 @@ async function remindMeStart(incomingMessage, userTag, attachment, authorName) {
         var timestamp = findTimestamp(split[1].split("@@")[0]);
         var info = incomingMessage.split("@@")[1];
         var username = authorName;
-        var userID = "<@" + userTag + ">";
+        var userID = userTag;
         var reminder = new Reminder(info, timestamp, username, userID, attachment);
         if (attachment.length > 0) {
             reminder.attachment = attachment;
