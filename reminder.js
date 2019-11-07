@@ -2,13 +2,13 @@
 const axios = require('axios');
 
 class Reminder {
-    constructor(info, timestamp, username, userID, attachment, key) {
+    constructor(info, timestamp, username, userID, attachment, id) {
         this.info = info;
         this.timestamp = timestamp;
         this.username = username;
         this.userID = userID;
         this.attachment = attachment;
-        this.key = key;
+        this.id = id;
     }
 }
 
@@ -37,12 +37,10 @@ function setLastChannel(last) {
 async function getAllReminders() {
     try {
         let data = await axios.get("http://remindmehome.com/reminders");
-        let keys = Object.keys(data.data);
-        let reminders = keys.map((key) => {
-            let remObj = data.data[key];
-            return new Reminder(remObj.info, remObj.timestamp, remObj.username, remObj.userID, remObj.attachment, key);
-        });        
-        return reminders;
+        let reminders = data.data.map((remObj) => {
+            return new Reminder(remObj.info, remObj.timestamp, remObj.username, remObj.userID, remObj.attachment, remObj.id);
+        });
+	return reminders;
     }
     catch (err) {
         console.log(err);
@@ -67,21 +65,17 @@ async function storeReminder(reminder) {
 async function deleteReminder(reminder)
 {    
     try {
-        // console.log(reminder); 
-        let url = "http://remindmehome.com/reminders/delete";
+         console.log(reminder); 
+        let url = "http://remindmehome.com/reminders/delete/";
         let response = await axios.post(url, reminder);
-        if (response.message == "success") {
-            return true;
-        }
-        else {
-            return false;
-        }
-    }
-    catch (err) {
-        // console.log(err);
-        
-        return true;
-    }
+        console.log("delete success");
+	return true;
+	}
+	catch(e)
+{
+	console.log("FAILED");
+        return false;
+} 
 }
 
 //Lists all the reminders
@@ -138,10 +132,18 @@ async function checkTimes(client) {
         reminders.forEach((reminder) => {            
             if (Date.now() > reminder.timestamp) {
                 let userid = reminder.userID;
-                
-		console.log("REMINDING " + userid);
-                client.users.find("id", userid).createDM();
-				dmChan.then(chan => {
+                var user = client.users.find("id", userid);
+		if(user == null)
+		{
+                	var user = client.users.find("username", reminder.username);
+		}
+		if(user == null)
+		{
+                    deleteReminder(reminder);
+		}
+                var dmChan = user.createDM();
+		
+		dmChan.then(chan => {
                     chan.send(reminder.info);
                     deleteReminder(reminder);
                 });
