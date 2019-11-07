@@ -137,8 +137,9 @@ async function checkTimes(client) {
         let reminders = await getAllReminders();
         reminders.forEach((reminder) => {            
             if (Date.now() > reminder.timestamp) {
-
-                client.users.find(reminder.userID).createDM();
+                let userid = "<@"+reminder.userID+">";
+                console.log("REMINDING " + userid);
+                client.users.find(userid).createDM();
 				dmChan.then(chan => {
                     chan.send(reminder.info);
                     deleteReminder(reminder);
