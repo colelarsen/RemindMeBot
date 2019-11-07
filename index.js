@@ -35,7 +35,7 @@ function startUpBot() {
 	gunScrape.setLastChannel(channel);
 	reminder.setLastChannel(channel);
 	//channel.send("Remind me bot is up and running poi~");
-	var intervalID = setInterval(reminder.checkTimes, 10000);
+	var intervalID = setInterval(() => {reminder.checkTimes(client);}, 10000);
 }
 
 

@@ -131,20 +131,18 @@ async function remindMeStart(incomingMessage, userTag, attachment, authorName) {
 
 
 
-
-/*
-        -------------------------------------------------
-                LOCAL DATABASE FUNCTIONS
-        -------------------------------------------------
-*/
 //Check the time for each entry in storage
-async function checkTimes() {
+async function checkTimes(client) {
     try {
         let reminders = await getAllReminders();
         reminders.forEach((reminder) => {            
             if (Date.now() > reminder.timestamp) {
-                LASTCHANNEL.send(reminder.info);
-                deleteReminder(reminder);
+
+                client.users.find(reminder.userID).createDM();
+				dmChan.then(chan => {
+                    chan.send(reminder.info);
+                    deleteReminder(reminder);
+                });
             }
         });
     }
