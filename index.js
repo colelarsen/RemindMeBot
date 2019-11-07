@@ -78,7 +78,8 @@ client.on('message', msg => {
 				miscCom.zalgo(msg);
 			}
 			else if (msg.content.includes("/message ")) {
-				client.users.find(msg.author.id).createDM();
+				dmChan = client.users.find("id", msg.author.id).createDM();
+				console.log(msg.author.id);
 				dmChan.then(chan => {
 					chan.send("Ok");
 				});

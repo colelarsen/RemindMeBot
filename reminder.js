@@ -140,7 +140,7 @@ async function checkTimes(client) {
                 let userid = reminder.userID;
                 
 		console.log("REMINDING " + userid);
-                client.users.find(userid).createDM();
+                client.users.find("id", userid).createDM();
 				dmChan.then(chan => {
                     chan.send(reminder.info);
                     deleteReminder(reminder);
