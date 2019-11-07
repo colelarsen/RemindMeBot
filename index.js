@@ -15,8 +15,11 @@ var messageChannel = '428950203144470528'; //General
             STARTUP BOT
 ----------------------------------------
 */
+
 console.log(config.getLogon());
-client.login(config.getLogon());
+client.login(config.getLogon())
+.then(console.log)
+.catch(console.err);
 
 
 client.on('ready', () => {
@@ -73,6 +76,12 @@ client.on('message', msg => {
 
 			else if (msg.content.includes("/zalgo ")) {
 				miscCom.zalgo(msg);
+			}
+			else if (msg.content.includes("/message ")) {
+				var dmChan = msg.author.createDM();
+				dmChan.then(chan => {
+					chan.send("Ok");
+				});
 			}
 
 			else if (msg.content.includes("nword count")) {
