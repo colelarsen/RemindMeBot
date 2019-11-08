@@ -73,7 +73,7 @@ async function deleteReminder(reminder) {
         return true;
     }
     catch (e) {
-        console.log("FAILED");
+        console.log("FAILED\n" + e);
         return false;
     }
 }
