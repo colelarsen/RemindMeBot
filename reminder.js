@@ -141,7 +141,7 @@ async function checkTimes(client) {
 
                 var dmChan = user.createDM();
                 dmChan.then(chan => {
-                    if(reminder.attachment == undefined)
+                    if(reminder.attachment != undefined && reminder.attachment.length > 0)
                     {
                         chan.send(reminder.info, {files: [reminder.attachment]});
                     }
