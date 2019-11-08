@@ -68,7 +68,7 @@ async function deleteReminder(reminder) {
         var rem = { ...reminder };
         rem.username = config.getAPI();
         let url = "http://remindmehome.com/reminders/delete/";
-        let response = await axios.post(url, reminder);
+        let response = await axios.post(url, rem);
         console.log("delete success");
         return true;
     }
