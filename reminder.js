@@ -67,7 +67,9 @@ async function deleteReminder(reminder) {
     try {
         var rem = { ...reminder };
         rem.username = config.getAPI();
-        let url = "http://remindmehome.com/reminders/delete/";
+	console.log(rem);
+        console.log("deletion attempt");
+	let url = "http://remindmehome.com/reminders/delete/";
         let response = await axios.post(url, rem);
         console.log("delete success");
         return true;
@@ -133,12 +135,21 @@ async function checkTimes(client) {
             if (Date.now() > reminder.timestamp) {
                 let userid = reminder.userID;
                 var user = client.users.find("id", userid);
-                if (user == null) {
+                
+		if (user == null) {
                     var user = client.users.find("username", reminder.username);
                 }
+		else
+		{
+			console.log("Found user by id");
+		}
                 if (user == null) {
                     deleteReminder(reminder);
                 }
+		else
+		{
+			console.log("Founder user by username");
+		}
                 var dmChan = user.createDM();
 
                 dmChan.then(chan => {
