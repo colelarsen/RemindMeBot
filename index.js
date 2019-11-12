@@ -129,7 +129,11 @@ client.on('message', msg => {
 
 
 			else if (msg.content === 'ping') {
-				sg.reply('pong');
+				msg.reply('pong');
+			}
+
+			else if (msg.content === 'get id') {
+				msg.reply(msg.author.id);
 			}
 
 			else if (msg.content === 'OH SHIT') {
