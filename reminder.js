@@ -44,6 +44,7 @@ async function getAllReminders() {
             return new Reminder(remObj.info, remObj.timestamp, remObj.username, remObj.userID, remObj.attachment, remObj.id, remObj.authKey, remObj.ownerUsername);
         });
         await sleep(10000);
+	console.log(reminders,"Returning reminders");
         return reminders;
     }
     catch (err) {
