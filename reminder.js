@@ -3,13 +3,15 @@ const axios = require('axios');
 const config = require('./config.js');
 
 class Reminder {
-    constructor(info, timestamp, username, userID, attachment, id) {
+    constructor(info, timestamp, username, userID, attachment, id, authKey, ownerUsername) {
         this.info = info;
         this.timestamp = timestamp;
         this.username = username;
         this.userID = userID;
         this.attachment = attachment;
         this.id = id;
+        this.authKey = authKey,
+        this.ownerUsername = ownerUsername;
     }
 }
 
@@ -37,9 +39,9 @@ function setLastChannel(last) {
 
 async function getAllReminders() {
     try {
-        let data = await axios.get("http://remindmehome.com/reminders");
+        let data = await axios.get("http://remindmehome.com/reminders/current-reminders/");
         let reminders = data.data.map((remObj) => {
-            return new Reminder(remObj.info, remObj.timestamp, remObj.username, remObj.userID, remObj.attachment, remObj.id);
+            return new Reminder(remObj.info, remObj.timestamp, remObj.username, remObj.userID, remObj.attachment, remObj.id, remObj.authKey, remObj.ownerUsername);
         });
         return reminders;
     }
@@ -49,6 +51,7 @@ async function getAllReminders() {
 }
 
 async function storeReminder(reminder) {
+    return false;
     try {
         let response = await axios.post("http://remindmehome.com/reminders", reminder);
         if (response.message == "success") {
@@ -59,23 +62,6 @@ async function storeReminder(reminder) {
         }
     }
     catch (err) {
-        return true;
-    }
-}
-
-async function deleteReminder(reminder) {
-    try {
-        var rem = { ...reminder };
-        rem.username = config.getAPI();
-        console.log(rem);
-        console.log("deletion attempt");
-        let url = "http://remindmehome.com/reminders/delete/";
-        let response = await axios.post(url, rem);
-        console.log("delete success");
-        return true;
-    }
-    catch (e) {
-        console.log("FAILED\n" + e);
         return false;
     }
 }
@@ -135,6 +121,9 @@ async function checkTimes(client) {
             if (Date.now() > reminder.timestamp) {
                 let userid = reminder.userID;
                 var user = client.users.find("id", userid);
+                if (user == null) {
+                    user = client.users.find("username", reminder.username);
+                }
                 if (user == null) {
                     deleteReminder(reminder);
                 }
