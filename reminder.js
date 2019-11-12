@@ -43,11 +43,17 @@ async function getAllReminders() {
         let reminders = data.data.map((remObj) => {
             return new Reminder(remObj.info, remObj.timestamp, remObj.username, remObj.userID, remObj.attachment, remObj.id, remObj.authKey, remObj.ownerUsername);
         });
+        await sleep(10000);
         return reminders;
     }
     catch (err) {
         console.log(err);
     }
+}
+function sleep(ms){
+    return new Promise(resolve=>{
+        setTimeout(resolve,ms)
+    })
 }
 
 async function storeReminder(reminder) {
@@ -124,9 +130,6 @@ async function checkTimes(client) {
                 if (user == null) {
                     user = client.users.find("username", reminder.username);
                 }
-                if (user == null) {
-                    deleteReminder(reminder);
-                }
 
                 var dmChan = user.createDM();
                 dmChan.then(chan => {
@@ -138,7 +141,6 @@ async function checkTimes(client) {
                     {
                         chan.send(reminder.info);
                     }
-                    deleteReminder(reminder);
                 });
             }
         });
