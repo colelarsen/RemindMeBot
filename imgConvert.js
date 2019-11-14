@@ -2,11 +2,15 @@
 var Jimp = require('jimp');
 const Discord = require('discord.js');
 module.exports.convertImage = convertImage;
+module.exports.leftXFlip = leftXFlip;
+module.exports.rightXFlip = rightXFlip;
+module.exports.topYFlip = topYFlip;
+module.exports.botYFlip = botYFlip;
 
 
-async function convertImage(imgLink, channel) {
+async function convertImage(imgLink, channel, cb) {
     var image = await Jimp.read(imgLink)
-    image = await leftXFlip(img);
+    image = await cb(img);
 
     var imgBuf = await image.getBufferAsync(mime); 
     var discordAttachment = new Discord.Attachment(imgBuf, "img");

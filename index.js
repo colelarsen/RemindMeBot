@@ -16,8 +16,8 @@ const imageConvert = require('./imgConvert');
 
 console.log(config.getLogon());
 client.login(config.getLogon())
-.then(console.log)
-.catch(console.err);
+	.then(console.log)
+	.catch(console.err);
 
 
 client.on('ready', () => {
@@ -27,7 +27,7 @@ client.on('ready', () => {
 //Start the bot
 var startUp = setTimeout(startUpBot, 5000);
 function startUpBot() {
-	var intervalID = setInterval(() => {reminder.checkTimes(client);}, 10000);
+	var intervalID = setInterval(() => { reminder.checkTimes(client); }, 10000);
 }
 
 
@@ -85,10 +85,23 @@ client.on('message', msg => {
 				miscCom.handleImageSearch(msg.content);
 			}
 
-			else if (msg.content.includes("image convert:")) {
+			else if (msg.content.includes("image xl")) {
 				var attachment = processAttachment(msg.attachments);
-				imageConvert.convertImage(attachment, LASTCHANNEL);
+				imageConvert.convertImage(attachment, LASTCHANNEL, imageConvert.leftXFlip);
 			}
+			else if (msg.content.includes("image xr")) {
+				var attachment = processAttachment(msg.attachments);
+				imageConvert.convertImage(attachment, LASTCHANNEL, imageConvert.rightXFlip);
+			}
+			else if (msg.content.includes("image yt")) {
+				var attachment = processAttachment(msg.attachments);
+				imageConvert.convertImage(attachment, LASTCHANNEL, imageConvert.topYFlip);
+			}
+			else if (msg.content.includes("image yb")) {
+				var attachment = processAttachment(msg.attachments);
+				imageConvert.convertImage(attachment, LASTCHANNEL, imageConvert.botYFlip);
+			}
+
 
 			else if (msg.content.includes("gun:")) {
 				gunScrape.handleGungeonSearch(msg.content);
