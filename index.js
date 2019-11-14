@@ -85,22 +85,22 @@ client.on('message', msg => {
 				miscCom.handleImageSearch(msg.content);
 			}
 
-			else if (msg.content.includes("image xl")) {
+			else if (msg.content == "image xl") {
 				var attachment = processAttachment(msg.attachments);
 				msg.delete();
 				imageConvert.convertImage(attachment, LASTCHANNEL, imageConvert.leftXFlip);
 			}
-			else if (msg.content.includes("image xr")) {
+			else if (msg.content == "image xr") {
 				var attachment = processAttachment(msg.attachments);
 				msg.delete();
 				imageConvert.convertImage(attachment, LASTCHANNEL, imageConvert.rightXFlip);
 			}
-			else if (msg.content.includes("image yt")) {
+			else if (msg.content == "image yt") {
 				var attachment = processAttachment(msg.attachments);
 				msg.delete();
 				imageConvert.convertImage(attachment, LASTCHANNEL, imageConvert.topYFlip);
 			}
-			else if (msg.content.includes("image yb")) {
+			else if (msg.content == "image yb") {
 				var attachment = processAttachment(msg.attachments);
 				msg.delete();
 				imageConvert.convertImage(attachment, LASTCHANNEL, imageConvert.botYFlip);
