@@ -87,18 +87,22 @@ client.on('message', msg => {
 
 			else if (msg.content.includes("image xl")) {
 				var attachment = processAttachment(msg.attachments);
+				msg.delete();
 				imageConvert.convertImage(attachment, LASTCHANNEL, imageConvert.leftXFlip);
 			}
 			else if (msg.content.includes("image xr")) {
 				var attachment = processAttachment(msg.attachments);
+				msg.delete();
 				imageConvert.convertImage(attachment, LASTCHANNEL, imageConvert.rightXFlip);
 			}
 			else if (msg.content.includes("image yt")) {
 				var attachment = processAttachment(msg.attachments);
+				msg.delete();
 				imageConvert.convertImage(attachment, LASTCHANNEL, imageConvert.topYFlip);
 			}
 			else if (msg.content.includes("image yb")) {
 				var attachment = processAttachment(msg.attachments);
+				msg.delete();
 				imageConvert.convertImage(attachment, LASTCHANNEL, imageConvert.botYFlip);
 			}
 

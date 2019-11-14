@@ -10,7 +10,7 @@ module.exports.botYFlip = botYFlip;
 
 async function convertImage(imgLink, channel, cb) {
     var image = await Jimp.read(imgLink)
-    image = await cb(img);
+    image = await cb(image);
 
     var imgBuf = await image.getBufferAsync(Jimp.AUTO); 
     var discordAttachment = new Discord.Attachment(imgBuf, "img.png");
