@@ -44,7 +44,6 @@ async function getAllReminders() {
             return new Reminder(remObj.info, remObj.timestamp, remObj.username, remObj.userID, remObj.attachment, remObj.id, remObj.authKey, remObj.ownerUsername);
         });
         await sleep(10000);
-	console.log(reminders,"Returning reminders");
         return reminders;
     }
     catch (err) {
@@ -167,7 +166,6 @@ function findTimestamp(incomingStr) {
         var spitArray = incomingString.split(" ");
         dateOfHasDate = findDateTimestamp(spitArray[0]);
         incomingString = incomingStr.substring(spitArray[0].length + 1);
-        //console.log("String split from date: " + incomingString);
     }
     try {
         var addToTimestamp = 0;
@@ -201,7 +199,6 @@ function findTimestamp(incomingStr) {
             timestamp = dateOfHasDate + addToTimestamp;
             //Convert to eastern from coordinated universal   
             timestamp += 1000 * 60 * 60 * 5;
-            //console.log("Date and adding: " + timestamp);
         }
         return timestamp;
     }
@@ -214,6 +211,5 @@ function findDateTimestamp(incomingString) {
     date = new Date();
     date = Date.parse(incomingString);
     date = new Date(date);
-    //console.log(date.getTime());
     return date.getTime();
 }
