@@ -6,10 +6,10 @@ module.exports.convertImage = convertImage;
 
 async function convertImage(imgLink, channel) {
     var image = await Jimp.read(imgLink)
-    image = await leftXFlip(img);
+    image = await leftXFlip(image);
 
-    var imgBuf = await image.getBufferAsync(mime); 
-    var discordAttachment = new Discord.Attachment(imgBuf, "img");
+    var imgBuf = await image.getBufferAsync(Jimp.AUTO); 
+    var discordAttachment = new Discord.Attachment(imgBuf, "img.png");
 
     channel.send({files: [discordAttachment]});
 }
