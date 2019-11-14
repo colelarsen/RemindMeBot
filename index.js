@@ -87,7 +87,7 @@ client.on('message', msg => {
 
 			else if (msg.content.includes("image convert:")) {
 				var attachment = processAttachment(msg.attachments);
-				imageConvert.convertImage(attachment, LASTCHANNEL, true);
+				imageConvert.convertImage(attachment, LASTCHANNEL);
 			}
 
 			else if (msg.content.includes("gun:")) {
