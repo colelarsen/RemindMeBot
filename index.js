@@ -5,9 +5,7 @@ const kiranico = require('./scrapeKiranico.js');
 const reminder = require('./reminder.js');
 const miscCom = require('./MiscCommands.js');
 const gunScrape = require('./scrapeGungeon');
-
-var messageChannel = '428950203144470528'; //General
-//var messageChannel = '521434157193232392'; //Bot Testing
+const imageConvert = require('./imgConvert');
 
 
 /*
@@ -29,12 +27,6 @@ client.on('ready', () => {
 //Start the bot
 var startUp = setTimeout(startUpBot, 5000);
 function startUpBot() {
-	var channel = client.channels.get(messageChannel);
-	kiranico.setLastChannel(channel);
-	miscCom.setLastChannel(channel);
-	gunScrape.setLastChannel(channel);
-	reminder.setLastChannel(channel);
-	//channel.send("Remind me bot is up and running poi~");
 	var intervalID = setInterval(() => {reminder.checkTimes(client);}, 10000);
 }
 
@@ -55,7 +47,6 @@ var LASTCHANNEL;
 client.on('message', msg => {
 	//If the message author is not this bot
 	LASTCHANNEL = msg.channel;
-
 	try {
 		if (msg.author.tag != client.user.tag) {
 			kiranico.setLastChannel(LASTCHANNEL);
@@ -92,6 +83,11 @@ client.on('message', msg => {
 
 			else if (msg.content.includes("image:")) {
 				miscCom.handleImageSearch(msg.content);
+			}
+
+			else if (msg.content.includes("image convert:")) {
+				var attachment = processAttachment(msg.attachments);
+				imageConvert.convertImage(attachment, LASTCHANNEL);
 			}
 
 			else if (msg.content.includes("gun:")) {
@@ -169,9 +165,6 @@ client.on('message', msg => {
 function processAttachment(attachmentCollection) {
 	var attachment = attachmentCollection.first();
 	if (attachment != null) {
-		//console.log("Has Attachment");
-		var channel = client.channels.get(messageChannel);
-		//channel.send(attachment.url);
 		return attachment.url;
 	}
 	return "";
