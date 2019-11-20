@@ -90,7 +90,7 @@ function getHelp()
 	.setColor(3447003)
     .setDescription('Commands');
     var commands = config.commands;
-    for(key of commands.keys())
+    for(key of Object.keys(commands))
     {
         embed.addField(item, commands[key]);
     }
