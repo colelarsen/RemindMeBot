@@ -1,0 +1,19 @@
+{
+    "commands": {
+        "/random <input>": "Randomizes letters in <input>",
+        "spoiler: <input>": "Hides letters in <input> from viewers until clicked",
+        "/zalgo <input>": "Zalgofies letters in <input>",
+        "/message <input>": "Sends user a message containing <input>",
+        "image: <input>": "Performs a google search for <input> and returns a random image",
+        "image <xl, xr, yt, yb>": "Mirrors an image (provided as an attachment) over the specified input",
+        "gun: <input>": "Looks up gungeon item with provided <input>",
+        "drops: <input>": "Looks up the drops of the <input> monster in MHGU",
+        "item: <input>": "Looks up the highest obtain rate for the <input> in MHGU",
+        "weapon: <weaponType>: <quantity>: <attributes (', ' seperated)>: <sort by (', ' seperated)>": "Returns a list of weapon from MHGU with the specified information.",
+        "ping": "Pongs",
+        "get id": "Returns the user id",
+        "OH SHIT": "A RAT",
+        "@RemindMeBot remind me: <date>@@<info>": "Sets a reminder to remind the user via DM of <info> at <date>",
+        "@RemindMeBot help:": "You just did this????"
+    }
+}

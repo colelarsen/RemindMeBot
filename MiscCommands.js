@@ -2,7 +2,7 @@
 const request = require('request');
 const cheerio = require('cheerio');
 const Discord = require('discord.js');
-const config = require('./config.js');
+const resources = require('./resources.json');
 
 module.exports.randomCaps = randomCaps;
 module.exports.setLastChannel = setLastChannel;
@@ -89,7 +89,7 @@ function getHelp()
     var embed = new Discord.RichEmbed()
 	.setColor(3447003)
     .setDescription('Commands');
-    var commands = config.commands;
+    var commands = resources.commands;
     for(key of Object.keys(commands))
     {
         embed.addField(item, commands[key]);
