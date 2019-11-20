@@ -72,12 +72,8 @@ client.on('message', msg => {
 				dmChan = client.users.find("id", msg.author.id).createDM();
 				console.log(msg.author.id);
 				dmChan.then(chan => {
-					chan.send("Ok");
+					chan.send(msg.content.splite("/message")[1]);
 				});
-			}
-
-			else if (msg.content.includes("nword count")) {
-				miscCom.findNWords(msg.channel);
 			}
 
 
@@ -162,14 +158,13 @@ client.on('message', msg => {
 			var incomingMessage = msg.content.split("> ")[1];
 			incomingMessage = incomingMessage.toLowerCase();
 
-			if (incomingMessage === "list reminders") {
-				reminder.listReminders().then(message => {
-					msg.reply(message);
-				});
-			}
-			else if (incomingMessage.includes("remind me:")) {
+			if (incomingMessage.includes("remind me:")) {
 				var respond = reminder.remindMeStart(msg.content, msg.author.id, attachment, msg.author.username);
 				console.log(msg.author.id);
+			}
+			else if(incomingMessage.includes("help"))
+			{
+				msg.reply(miscCom.getHelp());
 			}
 		}
 	}

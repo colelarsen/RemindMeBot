@@ -2,6 +2,7 @@
 const request = require('request');
 const cheerio = require('cheerio');
 const Discord = require('discord.js');
+const config = require('./config.js');
 
 module.exports.randomCaps = randomCaps;
 module.exports.setLastChannel = setLastChannel;
@@ -9,6 +10,7 @@ module.exports.handleImageSearch = handleImageSearch;
 module.exports.zalgo = zalgo;
 module.exports.findNWords;
 module.exports.spoiler = spoiler;
+module.exports.getHelp = getHelp;
 
 var LASTCHANNEL = "";
 
@@ -80,6 +82,19 @@ function spoiler(mesg)
     mesg.delete()
         .then(msg => console.log(`Deleted message from ${msg.author.username}`))
         .catch(console.error);
+}
+
+function getHelp()
+{
+    var embed = new Discord.RichEmbed()
+	.setColor(3447003)
+    .setDescription('Commands');
+    var commands = config.commands;
+    for(key of commands.keys())
+    {
+        embed.addField(item, commands[key]);
+    }
+    return embed;
 }
 
 
