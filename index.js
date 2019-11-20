@@ -8,8 +8,6 @@ const gunScrape = require('./scrapeGungeon');
 const imageConvert = require('./imgConvert');
 
 
-
-
 /*
 ----------------------------------------
             STARTUP BOT
@@ -74,7 +72,7 @@ client.on('message', msg => {
 				dmChan = client.users.find("id", msg.author.id).createDM();
 				console.log(msg.author.id);
 				dmChan.then(chan => {
-					chan.send(msg.content.splite("/message")[1]);
+					chan.send(msg.content.split("/message ")[1]);
 				});
 			}
 
@@ -127,17 +125,6 @@ client.on('message', msg => {
 			else if (msg.content.includes("item:")) {
 				kiranico.handleItemSearch(msg.content);
 			}
-
-
-			else if (msg.content.includes("set-kiranico-rank:")) {
-				kiranico.setRank(msg.content.split("set-kiranico-rank: ")[1]);
-			}
-
-
-			else if (msg.content.includes("set-kiranico-database:")) {
-				kiranico.setDatabase(msg.content.split("set-kiranico-database: ")[1].toUpperCase());
-			}
-
 
 			else if (msg.content === 'ping') {
 				msg.reply('pong');
