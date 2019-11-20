@@ -63,6 +63,7 @@ function sleep(ms){
 async function storeReminder(reminder) {
     return false;
     try {
+        console.log("Pushing reminder: " + reminder.info);
         let response = await axios.post("http://remindmehome.com/reminders/reminderbotpost/", reminder);
         console.log(response);
     }
