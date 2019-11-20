@@ -86,7 +86,7 @@ async function listReminders() {
 
 
 //Taken an incoming message and the Author and returns a response
-async function remindMeStart(incomingMessage, userId, attachment, username) {
+async function remindMeStart(incomingMessage, userID, attachment, username) {
     try {
         var messageLowerCase = incomingMessage.toLowerCase();
         var split = messageLowerCase.split("remind me: ");
