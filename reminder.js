@@ -4,13 +4,12 @@ const config = require('./config.js');
 
 
 class Reminder {
-    constructor(info, timestamp, username, userID, attachment, id, successMessage, failureMessage, authKey, ownerUsername, isPrivate) {
+    constructor(info, timestamp, username, userID, attachment, successMessage, failureMessage, authKey, ownerUsername, isPrivate) {
         this.info = info;
         this.timestamp = timestamp;
         this.username = username;
         this.userID = userID;
         this.attachment = attachment;
-        this.id = id;
         this.authKey = authKey,
         this.ownerUsername = ownerUsername;
         this.successMessage = successMessage;
