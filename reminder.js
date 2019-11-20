@@ -64,15 +64,10 @@ async function storeReminder(reminder) {
     return false;
     try {
         let response = await axios.post("http://remindmehome.com/reminders/reminderbotpost/", reminder);
-        if (response.message == "success") {
-            return true;
-        }
-        else {
-            return false;
-        }
+        console.log(response);
     }
     catch (err) {
-        return false;
+        console.log(err);
     }
 }
 
@@ -90,26 +85,18 @@ async function listReminders() {
 
 
 //Taken an incoming message and the Author and returns a response
-async function remindMeStart(incomingMessage, userTag, attachment, authorName) {
+async function remindMeStart(incomingMessage, userId, attachment, username) {
     try {
         var messageLowerCase = incomingMessage.toLowerCase();
         var split = messageLowerCase.split("remind me: ");
 
         var timestamp = findTimestamp(split[1].split("@@")[0]);
         var info = incomingMessage.split("@@")[1];
-        var username = authorName;
-        var userID = userTag;
         var reminder = new Reminder(info, timestamp, username, userID, attachment, "", "", "", "", "", true);
         if (attachment.length > 0) {
             reminder.attachment = attachment;
         }
-        let result = await storeReminder(reminder);
-        if (result) {
-            return "I will remind you\n" + info.split("\nATTCH")[0] + " \nIn " + timeStyle;
-        }
-        else {
-            // return "Sorry there was an error";
-        }
+        storeReminder(reminder);
     }
     catch (err) {
         console.log(err.message);
