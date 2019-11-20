@@ -61,9 +61,7 @@ function sleep(ms){
 
 async function storeReminder(reminder) {
     try {
-        console.log("Pushing reminder: " + reminder.info);
         let response = await axios.post("http://remindmehome.com/reminders/reminderbotpost/", reminder);
-        console.log(response);
     }
     catch (err) {
         console.log(err);
@@ -94,8 +92,6 @@ function remindMeStart(incomingMessage, userID, attachment, username) {
         if (attachment.length > 0) {
             reminder.attachment = attachment;
         }
-        console.log("Storing reminder");
-        console.log(reminder);
         storeReminder(reminder);
     }
     catch (err) {
