@@ -76,7 +76,6 @@ client.on('message', msg => {
 				});
 			}
 
-
 			else if (msg.content.includes("image:")) {
 				miscCom.handleImageSearch(msg.content);
 			}

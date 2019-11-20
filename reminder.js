@@ -2,8 +2,9 @@
 const axios = require('axios');
 const config = require('./config.js');
 
+
 class Reminder {
-    constructor(info, timestamp, username, userID, attachment, id, authKey, ownerUsername) {
+    constructor(info, timestamp, username, userID, attachment, id, successMessage, failureMessage, authKey, ownerUsername, isPrivate) {
         this.info = info;
         this.timestamp = timestamp;
         this.username = username;
@@ -12,6 +13,9 @@ class Reminder {
         this.id = id;
         this.authKey = authKey,
         this.ownerUsername = ownerUsername;
+        this.successMessage = successMessage;
+        this.failureMessage = failureMessage;
+        this.isPrivate = isPrivate;
     }
 }
 
@@ -41,7 +45,7 @@ async function getAllReminders() {
     try {
         let data = await axios.get("http://remindmehome.com/reminders/current-reminders/");
         let reminders = data.data.map((remObj) => {
-            return new Reminder(remObj.info, remObj.timestamp, remObj.username, remObj.userID, remObj.attachment, remObj.id, remObj.authKey, remObj.ownerUsername);
+            return new Reminder(remObj.info, remObj.timestamp, remObj.username, remObj.userID, remObj.attachment, remObj.id, "", "", remObj.authKey, remObj.ownerUsername, false);
         });
         await sleep(10000);
         return reminders;
@@ -59,7 +63,7 @@ function sleep(ms){
 async function storeReminder(reminder) {
     return false;
     try {
-        let response = await axios.post("http://remindmehome.com/reminders", reminder);
+        let response = await axios.post("http://remindmehome.com/reminders/reminderbotpost/", reminder);
         if (response.message == "success") {
             return true;
         }
@@ -95,7 +99,7 @@ async function remindMeStart(incomingMessage, userTag, attachment, authorName) {
         var info = incomingMessage.split("@@")[1];
         var username = authorName;
         var userID = userTag;
-        var reminder = new Reminder(info, timestamp, username, userID, attachment);
+        var reminder = new Reminder(info, timestamp, username, userID, attachment, "", "", "", "", "", true);
         if (attachment.length > 0) {
             reminder.attachment = attachment;
         }
