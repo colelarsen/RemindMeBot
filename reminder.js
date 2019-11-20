@@ -86,17 +86,18 @@ async function listReminders() {
 
 
 //Taken an incoming message and the Author and returns a response
-async function remindMeStart(incomingMessage, userID, attachment, username) {
+function remindMeStart(incomingMessage, userID, attachment, username) {
     try {
         var messageLowerCase = incomingMessage.toLowerCase();
         var split = messageLowerCase.split("remind me: ");
-
         var timestamp = findTimestamp(split[1].split("@@")[0]);
         var info = incomingMessage.split("@@")[1];
-        var reminder = new Reminder(info, timestamp, username, userID, attachment, "", "", "", "", "", true);
+        var reminder = new Reminder(info, timestamp, username, userID, attachment, "", "", "", "", "", false);
         if (attachment.length > 0) {
             reminder.attachment = attachment;
         }
+        console.log("Storing reminder");
+        console.log(reminder);
         storeReminder(reminder);
     }
     catch (err) {
