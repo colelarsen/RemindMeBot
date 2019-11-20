@@ -92,7 +92,7 @@ function getHelp()
     var commands = resources.commands;
     for(key of Object.keys(commands))
     {
-        embed.addField(item, commands[key]);
+        embed.addField(key, commands[key]);
     }
     return embed;
 }
