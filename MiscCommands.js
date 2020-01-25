@@ -89,7 +89,7 @@ function dude(mesg)
 {
     mesg.channel.send("HAHA DUDE WEED");
     LASTCHANNEL=mesg.channel;
-    handleImageSearch("DUDEWEED");
+    handleImageSearch("image: DUDEWEED");
     mesg.channel.send("HAHA DUDE");
 }
 
