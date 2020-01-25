@@ -10,6 +10,7 @@ module.exports.handleImageSearch = handleImageSearch;
 module.exports.zalgo = zalgo;
 module.exports.findNWords;
 module.exports.spoiler = spoiler;
+module.exports.dude = dude;
 module.exports.getHelp = getHelp;
 
 var LASTCHANNEL = "";
@@ -82,6 +83,18 @@ function spoiler(mesg)
     mesg.delete()
         .then(msg => console.log(`Deleted message from ${msg.author.username}`))
         .catch(console.error);
+}
+
+function dude(mesg)
+{
+    mesg.channel.send("HAHA DUDE WEED");
+    mesg.channel.send({
+        files: ['https://www.google.com/imgres?imgurl=https%3A%2F%2Flookaside.fbsbx.com%2Flookaside%2Fcrawler%2Fmedia%2F%3Fmedia_id%3D762212417281562&imgrefurl=https%3A%2F%2Fwww.facebook.com%2Fpages%2Fcategory%2FApp-Page%2FWeedmoji-750280318474772%2F&docid=MYaGp5qZ3wXzvM&tbnid=CIcP7_aNt-FHBM%3A&vet=10ahUKEwjh1K6Knp_nAhWRnOAKHZeaCEIQMwg7KAAwAA..i&w=640&h=640&bih=967&biw=1920&q=weedmoji&ved=0ahUKEwjh1K6Knp_nAhWRnOAKHZeaCEIQMwg7KAAwAA&iact=mrc&uact=8']
+    });
+    mesg.channel.send({
+        files: ['https://www.google.com/imgres?imgurl=https%3A%2F%2Flookaside.fbsbx.com%2Flookaside%2Fcrawler%2Fmedia%2F%3Fmedia_id%3D762212417281562&imgrefurl=https%3A%2F%2Fwww.facebook.com%2Fpages%2Fcategory%2FApp-Page%2FWeedmoji-750280318474772%2F&docid=MYaGp5qZ3wXzvM&tbnid=CIcP7_aNt-FHBM%3A&vet=10ahUKEwjh1K6Knp_nAhWRnOAKHZeaCEIQMwg7KAAwAA..i&w=640&h=640&bih=967&biw=1920&q=weedmoji&ved=0ahUKEwjh1K6Knp_nAhWRnOAKHZeaCEIQMwg7KAAwAA&iact=mrc&uact=8']
+    });
+    mesg.channel.send("HAHA DUDE");
 }
 
 function getHelp()

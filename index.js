@@ -101,6 +101,11 @@ client.on('message', msg => {
 				imageConvert.convertImage(attachment, LASTCHANNEL, imageConvert.botYFlip);
 			}
 
+			else if (msg.content.toLowerCase().includes("dude weed")) {
+
+				miscCom.dude(msg);
+			}
+
 
 			else if (msg.content.includes("gun:")) {
 				gunScrape.handleGungeonSearch(msg.content);
