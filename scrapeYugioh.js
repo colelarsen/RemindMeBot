@@ -6,23 +6,22 @@ const Discord = require('discord.js');
 module.exports.scrapeCard = scrapeCard;
 //https://www.google.co.in/search?q={searchtext}&source=lnms&tbm=isch
 
-var message;
+var channel;
 
 
 function scrapeCard(msg)
 {
-	message = msg;
+	channel = msg.channel;
 	userInput = msg.content.split("card: ")[1];
-	var u = urlstart + convertCardToUrl(userInput)
-	console.log(u);
+    var u = urlstart + convertCardToUrl(userInput)
+
 	imgscrape(userInput, u, sendURL);
 }
 
 var image;
 function sendURL()
 {
-	console.log(image);
-	message.reply(image);
+	channel.send({files: [image]});
 }
 
 

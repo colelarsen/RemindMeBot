@@ -6,6 +6,7 @@ const reminder = require('./reminder.js');
 const miscCom = require('./MiscCommands.js');
 const gunScrape = require('./scrapeGungeon');
 const imageConvert = require('./imgConvert');
+const cardScrape = require('./scrapeYugioh.js');
 
 
 /*
@@ -99,6 +100,11 @@ client.on('message', msg => {
 				var attachment = processAttachment(msg.attachments);
 				msg.delete();
 				imageConvert.convertImage(attachment, LASTCHANNEL, imageConvert.botYFlip);
+			}
+
+			else if (msg.content.includes("card: ")) {
+				
+				cardScrape.scrapeCard(msg);
 			}
 
 			else if (msg.content.toLowerCase().includes("dude weed")) {
