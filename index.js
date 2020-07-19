@@ -69,6 +69,9 @@ client.on('message', msg => {
 			else if (msg.content.includes("/zalgo ")) {
 				miscCom.zalgo(msg);
 			}
+			else if (msg.content.includes("/roll ")) {
+				miscCom.roll(msg);
+			}
 			else if (msg.content.includes("/message ")) {
 				dmChan = client.users.find("id", msg.author.id).createDM();
 				console.log(msg.author.id);

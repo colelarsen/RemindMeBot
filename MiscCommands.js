@@ -13,12 +13,26 @@ module.exports.spoiler = spoiler;
 module.exports.dude = dude;
 module.exports.getHelp = getHelp;
 
+module.exports.roll = roll;
+
 var LASTCHANNEL = "";
 
 
 
 function setLastChannel(last) {
     LASTCHANNEL = last;
+}
+
+
+
+function roll(mesg)
+{
+    var messageResponse = "";
+    var number = parseInt(mesg.content.split('/roll d')[1], 10);
+    
+    var messageResponse = Math.floor((Math.random() * number) + 1);
+    mesg.channel.send(messageResponse);
+
 }
 
 
