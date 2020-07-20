@@ -56,7 +56,7 @@ function deleteLastMessage(channel)
     {
         console.log(mesgId);
         channel.messages.delete(mesgId, "reason")
-        .then( del => console.log("delete Success")
+        .then( del => console.log("delete Success"))
         .catch(error => console.log(error));
 	}
 }
