@@ -60,6 +60,7 @@ function enhanceImage(channel)
     channel.messages.fetch({ limit: 10 })
         .then( messages => 
         {
+            console.log("got messages");
             var attachment = "";
             for(var i = 0; i < messages.size; i++)
             {
@@ -72,6 +73,7 @@ function enhanceImage(channel)
 
             if(attachment != "")
             {
+                console.log("got attachment");
                 imageConvert.convertImage(attachment, msg.channel, imageConvert.enhance);
 			}
 
