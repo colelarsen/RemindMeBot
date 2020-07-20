@@ -1,7 +1,6 @@
 const miscCom = require('./MiscCommands.js');
 const scraper = require('./EasyScraper');
 const Discord = require('discord.js');
-const miscCom = require('MiscCommands.js')
 
 module.exports.handleGungeonSearch = handleGungeonSearch; 
 

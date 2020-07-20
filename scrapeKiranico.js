@@ -253,7 +253,7 @@ function monsterScrape(url, monsterName, mesg)
 	send += '';
 	embed.addField("Weaknesses: ", send);
 	embed.setThumbnail(imageLink);
-    	miscCom.reply(mesg embed);    
+    	miscCom.reply(mesg, embed);    
     }); 
 }
 
