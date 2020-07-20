@@ -62,11 +62,10 @@ function enhanceImage(channel)
         {
             var messages = messageCol.array();
             console.log("got messages");
-            console.log(messages);
+            //console.log(messages);
             var attachment = "";
             for(var i = 0; i < messages.size; i++)
             {
-                console.log(messages.get(i));
                 var temp = processAttachment(messages.get(i));
                 if(temp != "")
                 {
