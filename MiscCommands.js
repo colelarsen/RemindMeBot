@@ -39,10 +39,11 @@ function roll(mesg)
 
 function tell(mesg)
 {
-mesg.delete()
+    
+    reply(mesg, mesg.content.split('/tell ')[1]);
+    mesg.delete()
         .then(msg => console.log(`Deleted message from ${msg.author.username}`))
         .catch(console.error);
-    reply(mesg.content.split('/tell ')[1], mesg.content);
 }
 
 function reply(mesg, content)
