@@ -1,8 +1,8 @@
 const request = require('request');
 const cheerio = require('cheerio');
 const Discord = require('discord.js');
+const miscCom = require('./MiscCommands.js');
 
-module.exports.setLastChannel = setLastChannel;
 module.exports.monsterScrape = monsterScrape;
 module.exports.scrapeKir = scrapeKir;
 module.exports.scrapeKirItemList = scrapeKirItemList;
@@ -11,14 +11,11 @@ module.exports.handleMonsterSearch = handleMonsterSearch;
 module.exports.setDatabase = setDatabase;
 module.exports.setRank = setRank;
 module.exports.handleWeaponSearch = handleWeaponSearch;
+
 //https://www.google.co.in/search?q={searchtext}&source=lnms&tbm=isch
 
-var LASTCHANNEL = "";
 
-function setLastChannel(last)
-{
-    LASTCHANNEL = last;
-}
+
 var MONDATABASE = 'MHGU';
 function setDatabase(data)
 {
@@ -45,11 +42,11 @@ function setRank(rank)
 //
 //
 //weapon: longsword: 5: Rare X, Purple: affinity, damage
-function handleMonsterSearch(msgContent, wiki)
+function handleMonsterSearch(msgContent, wiki, mesg)
 {
 	var userInput = "";
-	if(wiki) userInput = msgContent.split("monster: ")[1].toLowerCase();
-	else userInput = msgContent.split("drops: ")[1].toLowerCase();
+	if(wiki) userInput = mesg.content.split("monster: ")[1].toLowerCase();
+	else userInput = mesg.content.split("drops: ")[1].toLowerCase();
 
 	if(monsterList[userInput] != null) userInput = monsterList[userInput];
 	var monster = "";
@@ -68,11 +65,11 @@ function handleMonsterSearch(msgContent, wiki)
 	userInput = captilaizeFirstOfWord(userInput);
 	if(wiki)
 	{
-		monsterScrape("https://monsterhunter.fandom.com/wiki/" + monster, userInput);
+		monsterScrape("https://monsterhunter.fandom.com/wiki/" + monster, userInput, mesg);
 	}
 	else
 	{
-		scrapeKir("https://" + MONDATABASE + ".kiranico.com/", userInput);
+		scrapeKir("https://" + MONDATABASE + ".kiranico.com/", userInput, mesg);
 	}
 }
 
@@ -80,19 +77,19 @@ function handleMonsterSearch(msgContent, wiki)
 
 //ITEM SEARCHER
 //scrapeKiranico
-function handleItemSearch(msgContent)
+function handleItemSearch(mesg)
 {
-	var itemName = msgContent.split("item: ")[1];
+	var itemName = mesg.content.split("item: ")[1];
 	itemName = captilaizeFirstOfWord(itemName);
-	scrapeKirItemList("https://" + MONDATABASE + ".kiranico.com/item", itemName);
+	scrapeKirItemList("https://" + MONDATABASE + ".kiranico.com/item", itemName, mesg);
 }
 
 
 //WEAPON SEARCHER
 //scrapeKiranico
-function handleWeaponSearch(msgContent)
+function handleWeaponSearch(mesg)
 {
-	var weaponType = msgContent.split(": ")[1];
+	var weaponType = mesg.content.split(": ")[1];
 	if(weaponType.split(" ").length >= 2)
 	{
 		weaponType = weaponType.toLowerCase().split(" ")[0] + weaponType.toLowerCase().split(" ")[1];
@@ -143,7 +140,7 @@ function handleWeaponSearch(msgContent)
 		
 	}
 	console.log(sortWeaponBy1);
-	scrapeKirWeapon("https://mhgu.kiranico.com/" + weaponType, needs, lengthOfList);
+	scrapeKirWeapon("https://mhgu.kiranico.com/" + weaponType, needs, lengthOfList, mesg);
 }
 
 
@@ -177,7 +174,7 @@ var sorterList =
     SCRAPE MONSTERS WIKI
 --------------------------------------------------------------------
 */
-function monsterScrape(url, monsterName)
+function monsterScrape(url, monsterName, mesg)
 {
     //Send request
     request(url, (error, resp, html) => {
@@ -256,7 +253,7 @@ function monsterScrape(url, monsterName)
 	send += '';
 	embed.addField("Weaknesses: ", send);
 	embed.setThumbnail(imageLink);
-    	LASTCHANNEL.send(embed);    
+    	miscCom.reply(mesg embed);    
     }); 
 }
 
@@ -268,7 +265,7 @@ function monsterScrape(url, monsterName)
 --------------------------------------------------------------------
 */
 //scrape kiranico main page for monster name and link
-function scrapeKir(url, itemName)
+function scrapeKir(url, itemName, mesg)
 {
     request(url, (error, resp, html) => {
         if(error)
@@ -279,12 +276,12 @@ function scrapeKir(url, itemName)
         }
         let $ = cheerio.load(html);
         var imageLink = $('a:contains("' + itemName + '")').attr("href");  
-        if(imageLink != "" && imageLink != undefined) scrapeKirMon(imageLink, RANK, itemName);
+        if(imageLink != "" && imageLink != undefined) scrapeKirMon(imageLink, RANK, itemName, mesg);
     }); 
 }
 
 //scrape go to link and find all the drops
-function scrapeKirMon(url, rank, monName)
+function scrapeKirMon(url, rank, monName, mesg)
 {
     request(url, (error, resp, html) => {
         if(error)
@@ -343,7 +340,7 @@ function scrapeKirMon(url, rank, monName)
 	embed.setDescription(desc);
 
 		
-	LASTCHANNEL.send(embed);    
+	miscCom.reply(mesg, embed);    
     }); 
 }
 
@@ -363,7 +360,7 @@ function scrapeKirMon(url, rank, monName)
 */
 
 //Scrape item page for item link
-function scrapeKirItemList(url, itemName)
+function scrapeKirItemList(url, itemName, mesg)
 {
     request(url, (error, resp, html) => {
         if(error)
@@ -374,12 +371,12 @@ function scrapeKirItemList(url, itemName)
         }
         let $ = cheerio.load(html);
         var itemLink = $('a:contains("' + itemName + '")').attr("href");  
-        if(itemLink != "" && itemLink != undefined) scrapeKirItem(itemLink, itemName);
+        if(itemLink != "" && itemLink != undefined) scrapeKirItem(itemLink, itemName, mesg);
     }); 
 }
 
 //Scrape item page for where to do percentages
-function scrapeKirItem(url, itemName)
+function scrapeKirItem(url, itemName, mesg)
 {
     request(url, (error, resp, html) => {
         if(error)
@@ -440,7 +437,7 @@ function scrapeKirItem(url, itemName)
 	}
 	desc = desc.substring(0, 2047);
 	embed.setDescription(desc);
-	LASTCHANNEL.send(embed);    
+	miscCom.reply(mesg, embed);    
 
 }); 
 }
@@ -504,7 +501,7 @@ function filterWeapon(rows, needs)
     return weaponRows;
 }
 
-function scrapeKirWeapon(url, needs, lengthOfList)
+function scrapeKirWeapon(url, needs, lengthOfList, mesg)
 {
     request(url, (error, resp, html) => {
         if(error)
@@ -725,7 +722,7 @@ function scrapeKirWeapon(url, needs, lengthOfList)
         }
 
 		embed.setDescription(desc);
-		LASTCHANNEL.send(embed);
+		miscCom.reply(mesg, embed);
 		
     });
 }

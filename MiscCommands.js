@@ -14,6 +14,8 @@ module.exports.dude = dude;
 module.exports.getHelp = getHelp;
 
 module.exports.roll = roll;
+module.exports.tell = tell;
+module.exports.reply = reply;
 
 var LASTCHANNEL = "";
 
@@ -31,8 +33,19 @@ function roll(mesg)
     var number = parseInt(mesg.content.split('/roll d')[1], 10);
     
     var messageResponse = Math.floor((Math.random() * number) + 1);
-    mesg.channel.send(messageResponse);
+    reply(mesg, messageResponse);
 
+}
+
+function tell(mesg)
+{
+    reply(mesg, mesg.content);
+
+}
+
+function reply(mesg, content)
+{
+    mesg.channel.send(content);
 }
 
 
@@ -78,7 +91,9 @@ function zalgo(mesg) {
             newMessage += messageContent.charAt(i);
         }
     }
-    mesg.channel.send(newMessage);
+
+     reply(mesg, newMessage);
+
     mesg.delete()
         .then(msg => console.log(`Deleted message from ${msg.author.username}`))
         .catch(console.error);
@@ -93,7 +108,7 @@ function spoiler(mesg)
         var char = messageContent[i];
         messageResponse += '||' + char + '||';
     }
-    mesg.channel.send(messageResponse);
+    reply(mesg, messageResponse);
     mesg.delete()
         .then(msg => console.log(`Deleted message from ${msg.author.username}`))
         .catch(console.error);
@@ -101,10 +116,9 @@ function spoiler(mesg)
 
 function dude(mesg)
 {
-    mesg.channel.send("HAHA DUDE WEED");
-    LASTCHANNEL=mesg.channel;
-    handleImageSearch("image: DUDEWEED");
-    mesg.channel.send("HAHA DUDE");
+    reply(mesg, "HAHA DUDE WEED");
+    handleImageSearch(mesg);
+    reply(mesg, "HAHA DUDE");
 }
 
 function getHelp()
@@ -136,7 +150,7 @@ function randomCaps(mesg) {
             newMessage = newMessage + messageContent[i];
         }
     }
-    mesg.channel.send(newMessage);
+   reply(mesg, newMessage);
     mesg.delete()
         .then(msg => console.log(`Deleted message from ${msg.author.username}`))
         .catch(console.error);
@@ -145,8 +159,8 @@ function randomCaps(mesg) {
 
 const GoogleImages = require('google-images');
 
-function handleImageSearch(msgContent) {
-    var sniff = msgContent.split("image: ")[1];
+function handleImageSearch(mesg) {
+    var sniff = mesg.content.split("image: ")[1];
     var imageNum = 1;
     var client = new GoogleImages('001240387052449260152:yrizystafyw', 'AIzaSyA2U3DQF9AHMofsy2CtoP035jg-S1BP6Yc');
     client.search(sniff)
@@ -157,7 +171,7 @@ function handleImageSearch(msgContent) {
                 .setTitle(sniff)
                 .setImage(images[index].url)
                 .setDescription(" ");
-            LASTCHANNEL.send(embed);
+            reply(mesg, embed);
         })
         .catch((err) => { console.log(err) });
 }

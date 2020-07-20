@@ -50,7 +50,6 @@ client.on('message', msg => {
 	LASTCHANNEL = msg.channel;
 	try {
 		if (msg.author.tag != client.user.tag) {
-			kiranico.setLastChannel(LASTCHANNEL);
 			miscCom.setLastChannel(LASTCHANNEL);
 			gunScrape.setLastChannel(LASTCHANNEL);
 			reminder.setLastChannel(LASTCHANNEL);
@@ -68,6 +67,9 @@ client.on('message', msg => {
 
 			else if (msg.content.includes("/zalgo ")) {
 				miscCom.zalgo(msg);
+			}
+			else if (msg.content.includes("/tell ")) {
+				miscCom.tell(msg);
 			}
 			else if (msg.content.includes("/roll ")) {
 				miscCom.roll(msg);
@@ -117,26 +119,26 @@ client.on('message', msg => {
 
 
 			else if (msg.content.includes("gun:")) {
-				gunScrape.handleGungeonSearch(msg.content);
+				gunScrape.handleGungeonSearch(msg);
 			}
 
 
 			else if (msg.content.includes("monster:")) {
-				kiranico.handleMonsterSearch(msg.content, true);
+				kiranico.handleMonsterSearch(msg, true);
 			}
 
 			else if (msg.content.includes("weapon:")) {
-				kiranico.handleWeaponSearch(msg.content);
+				kiranico.handleWeaponSearch(msg);
 			}
 
 
 			else if (msg.content.includes("drops:")) {
-				kiranico.handleMonsterSearch(msg.content, false);
+				kiranico.handleMonsterSearch(msg, false);
 			}
 
 
 			else if (msg.content.includes("item:")) {
-				kiranico.handleItemSearch(msg.content);
+				kiranico.handleItemSearch(msg);
 			}
 
 			else if (msg.content === 'ping') {
@@ -148,7 +150,7 @@ client.on('message', msg => {
 			}
 
 			else if (msg.content === 'OH SHIT') {
-				LASTCHANNEL.send('A RAT');
+				miscCom.reply(msg, 'A RAT');
 			}
 
 

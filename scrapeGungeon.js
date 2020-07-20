@@ -1,15 +1,10 @@
 const miscCom = require('./MiscCommands.js');
 const scraper = require('./EasyScraper');
 const Discord = require('discord.js');
+const miscCom = require('MiscCommands.js')
 
 module.exports.handleGungeonSearch = handleGungeonSearch; 
-module.exports.setLastChannel = setLastChannel;
 
-var LASTCHANNEL = 0;
-function setLastChannel(last)
-{
-    LASTCHANNEL = last;
-}
 /*
 --------------------------------------------------------------------
     HANDLERS
@@ -17,7 +12,7 @@ function setLastChannel(last)
 */
 
 //Gungeon Searcher
-function handleGungeonSearch(content)
+function handleGungeonSearch(content, mesg)
 {
     var gun = "";
     var userInput = content.split("gun: ")[1];
@@ -35,7 +30,7 @@ function handleGungeonSearch(content)
 		}	
 	}
 
-    scraper.getPage('https://enterthegungeon.gamepedia.com/' + userInput, getSynergies);
+    scraper.getPage('https://enterthegungeon.gamepedia.com/' + userInput, getSynergies, mesg);
 }
 
 //Capitalizes the first letter of every word
@@ -60,7 +55,7 @@ function captilaizeFirstOfWord(string)
 	return newS
 }
 
-function getSynergies(html)
+function getSynergies(html, mesg)
 {
     var effects = scraper.easyGet('h2:contains("Effects") + ul', 'text', html);
 	var synergies2 = scraper.easyGet('h2:contains("Notes") + ul:contains(" - ")', 'text', html).split('\n');
@@ -73,11 +68,11 @@ function getSynergies(html)
             synergies.push(synergies2[syn]);
         }
     }
-    embedSynergies(effects, synergies);
+    embedSynergies(effects, synergies, mesg);
 }
 
 var curGun = "";
-function embedSynergies(effects, synergies)
+function embedSynergies(effects, synergies, mesg)
 {
     var embed = new Discord.RichEmbed()
 	.setTitle(curGun)
@@ -127,5 +122,5 @@ function embedSynergies(effects, synergies)
     {
         embed.description = effects;
     }
-	LASTCHANNEL.send(embed);    
+	miscCom.reply(mesg, embed);    
 }

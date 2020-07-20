@@ -7,7 +7,7 @@ const fs = require('fs');
 module.exports.getPage = getPage;
 module.exports.easyGet = easyGet;
 
-function getPage(url, cb)   {
+function getPage(url, cb, mesg)   {
     request(url, (error, resp, html) => {
         if(error)
         {
@@ -15,7 +15,7 @@ function getPage(url, cb)   {
                 error: error
             });
         }
-        cb(html);
+        cb(html, mesg);
     }); 
 }
 
