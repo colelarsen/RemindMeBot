@@ -60,7 +60,8 @@ function deleteLastMessage(channel)
     var mesgId = lastMessages.pop();
     if(mesgId != null)
     {
-        channel.messages.delete(mesgId)
+        console.log(mesgId);
+        channel.messages.delete(mesgId, "reason")
         .catch(console.error);
 	}
 }
