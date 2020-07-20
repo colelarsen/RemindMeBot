@@ -55,15 +55,9 @@ function deleteLastMessage(channel)
     if(mesgId != null)
     {
         console.log(mesgId);
-        channel.messages.fetch(mesgId)
-          .then(message => 
-          {
-            console.log(message.content);
-             message.delete()
-            .then(msg => console.log(`Deleted message from ${msg.author.username}`))
-            .catch(console.error);
-          })
-          .catch(console.error);
+        channel.messages.delete(mesgId, "reason")
+        .then( del => console.log("delete Success")
+        .catch(error => console.log(error));
 	}
 }
 
