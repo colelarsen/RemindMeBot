@@ -87,7 +87,7 @@ client.on('message', msg => {
 			}
 
 			else if (msg.content.includes("image:")) {
-				miscCom.handleImageSearch(msg.content);
+				miscCom.handleImageSearch(msg);
 			}
 
 			else if (msg.content == "image xl") {

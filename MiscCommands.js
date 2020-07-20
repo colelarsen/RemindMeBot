@@ -162,8 +162,19 @@ function randomCaps(mesg) {
 
 const GoogleImages = require('google-images');
 
-function handleImageSearch(mesg) {
-    var sniff = mesg.content.split("image: ")[1];
+function handleImageSearch(mesg, content) {
+    
+    var sniff "";
+    if(content != null)
+    {
+        sniff = content;
+	}
+    else
+    {
+     sniff = mesg.content.split("image: ")[1];
+	}
+    
+    
     var imageNum = 1;
     var client = new GoogleImages('001240387052449260152:yrizystafyw', 'AIzaSyA2U3DQF9AHMofsy2CtoP035jg-S1BP6Yc');
     client.search(sniff)
