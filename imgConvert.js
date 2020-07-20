@@ -68,24 +68,24 @@ function botYFlip(img) {
 
 async function enhance(img)
 {
-    
+    var scale = 3;
     var w = img.bitmap.width;
     var h = img.bitmap.height;
 
 
 
 
-    var blockW = Math.floor((Math.random() * 5));
-    var blockY = Math.floor((Math.random() * 5));
+    var blockW = Math.floor((Math.random() * scale));
+    var blockY = Math.floor((Math.random() * scale));
 
     console.log(blockW + ":" + blockY + ":" + w + ":" + h);
 
 
     //3:2:512:512
 
-    var xstart = w/5*blockW;
-    var ystart = h/5*blockY;
+    var xstart = w/scale*blockW;
+    var ystart = h/scale*blockY;
 
-    await img.crop(xstart, ystart, w/5, w/5);
+    await img.crop(xstart, ystart, w/scale, w/scale);
     return img;
 }
