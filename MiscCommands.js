@@ -66,7 +66,7 @@ function deleteLastMessage(channel)
                 console.log(error)
             
             });
-        }
+        })
         .catch(error => 
         {
             console.log(error)
