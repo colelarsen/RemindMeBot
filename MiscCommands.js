@@ -58,7 +58,7 @@ function reply(mesg, content)
 function deleteLastMessage(channel)
 {
     var mesgId = lastMessages.pop();
-    if(mesg != null)
+    if(mesgId != null)
     {
         channel.messages.delete(mesgId)
         .catch(console.error);
