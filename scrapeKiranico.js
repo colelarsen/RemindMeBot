@@ -42,7 +42,7 @@ function setRank(rank)
 //
 //
 //weapon: longsword: 5: Rare X, Purple: affinity, damage
-function handleMonsterSearch(mesg, wiki, mesg)
+function handleMonsterSearch(mesg, wiki)
 {
 	var userInput = "";
 	if(wiki) userInput = mesg.content.split("monster: ")[1].toLowerCase();
