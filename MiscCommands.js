@@ -45,7 +45,7 @@ function tell(mesg)
 var lastMessages = [];
 function reply(mesg, content)
 {
-    lastMessages.push(mesg.id);
+    lastMessages.push(mesg);
     mesg.channel.send(content);
 }
 
