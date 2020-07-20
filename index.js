@@ -72,7 +72,7 @@ client.on('message', msg => {
 				}
 			}
 
-			else if (msg.content.includes("spoiler:")) {
+			else if (msg.content.includes("/deleteLast")) {
 				miscCom.deleteLastMessage();
 			}
 
