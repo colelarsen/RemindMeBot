@@ -11,10 +11,10 @@ module.exports.handleGungeonSearch = handleGungeonSearch;
 */
 
 //Gungeon Searcher
-function handleGungeonSearch(content, mesg)
+function handleGungeonSearch(mesg)
 {
     var gun = "";
-    var userInput = content.split("gun: ")[1];
+    var userInput = mesg.content.split("gun: ")[1];
     userInput = captilaizeFirstOfWord(userInput);
     curGun = userInput;
     for(i = 0; i < userInput.length; i++)
