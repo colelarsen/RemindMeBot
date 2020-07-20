@@ -80,7 +80,7 @@ function enhance(img)
     var blockW = Math.floor((Math.random() * 5));
     var blockY = Math.floor((Math.random() * 5));
 
-    for(x = blockX*w5; x < w && x < blockX*(w5+1); x++)
+    for(x = blockW*w5; x < w && x < blockW*(w5+1); x++)
     {
         for(y = blockY*h5; y < h && y < blockY*(h5+1); y++)
         {
