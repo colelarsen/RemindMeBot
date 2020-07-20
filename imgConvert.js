@@ -66,7 +66,7 @@ function botYFlip(img) {
 }
 
 
-function enhance(img)
+async function enhance(img)
 {
     
     await image.resize(150, 150);
