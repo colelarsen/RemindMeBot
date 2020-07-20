@@ -238,7 +238,7 @@ function monsterScrape(url, monsterName, mesg)
 	var title = $('div[data-source="English Title"] div').html();
 	var species = $('div[data-source="Monster Type"] div a').html();
 
-    var embed = new Discord.RichEmbed()
+    var embed = new Discord.MessageEmbed()
 	.setColor(3447003)
 	.setDescription('[' + monsterName + '](' + url + ')')
 	.addField("Title", title)
@@ -306,7 +306,7 @@ function scrapeKirMon(url, rank, monName, mesg)
         }
         tables.push(cleanTable(tableItems.split(headers[headers.length-1])[1], false).split('% '));
 	
-        var embed = new Discord.RichEmbed()
+        var embed = new Discord.MessageEmbed()
 	.setTitle(monName)
 	.setColor(3447003)
 	
@@ -419,7 +419,7 @@ function scrapeKirItem(url, itemName, mesg)
           });
         
 
-	var embed = new Discord.RichEmbed()
+	var embed = new Discord.MessageEmbed()
 	.setTitle(itemName)
 	.setColor(3447003)
     	var desc = "";
@@ -663,7 +663,7 @@ function scrapeKirWeapon(url, needs, lengthOfList, mesg)
 		
 		
 		
-		var embed = new Discord.RichEmbed()
+		var embed = new Discord.MessageEmbed()
 		.setTitle("Weapons")
 		.setColor(3447003)
 

@@ -73,7 +73,7 @@ function getSynergies(html, mesg)
 var curGun = "";
 function embedSynergies(effects, synergies, mesg)
 {
-    var embed = new Discord.RichEmbed()
+    var embed = new Discord.MessageEmbed()
 	.setTitle(curGun)
 	.setColor(3447003)
     var desc = "";

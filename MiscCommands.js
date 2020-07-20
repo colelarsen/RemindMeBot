@@ -207,7 +207,7 @@ function handleImageSearch(mesg, content) {
     client.search(sniff)
         .then(images => {
             let index = Math.round(Math.random()*images.length);
-            var embed = new Discord.RichEmbed()
+            var embed = new Discord.MessageEmbed()
                 .setColor(3447003)
                 .setTitle(sniff)
                 .setImage(images[index].url)
