@@ -49,6 +49,14 @@ client.on('message', msg => {
 	//If the message author is not this bot
 	try {
 		if (msg.author.tag != client.user.tag) {
+
+			var rand = Math.floor((Math.random() * 1000) + 1);
+			if(rand == 1)
+			{
+				miscCom.reply(msg, "i love reisen");
+			}
+
+
 			if (msg.content.includes("/random")) {
 				if (msg.content.startsWith("/random")) {
 					miscCom.randomCaps(msg);
