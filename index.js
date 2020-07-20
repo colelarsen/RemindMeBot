@@ -47,12 +47,8 @@ var LASTCHANNEL;
 //If you get a message
 client.on('message', msg => {
 	//If the message author is not this bot
-	LASTCHANNEL = msg.channel;
 	try {
 		if (msg.author.tag != client.user.tag) {
-			miscCom.setLastChannel(LASTCHANNEL);
-			gunScrape.setLastChannel(LASTCHANNEL);
-			reminder.setLastChannel(LASTCHANNEL);
 			if (msg.content.includes("/random")) {
 				if (msg.content.startsWith("/random")) {
 					miscCom.randomCaps(msg);
