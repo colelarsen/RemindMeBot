@@ -69,7 +69,6 @@ function botYFlip(img) {
 async function enhance(img)
 {
     
-    await image.resize(150, 150);
     var w = img.bitmap.width;
     var h = img.bitmap.height;
 
