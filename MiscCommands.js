@@ -51,16 +51,18 @@ var lastMessages = [];
 
 function reply(mesg, content)
 {
-    lastMessages.push(mesg);
+    lastMessages.push(mesg.id);
     mesg.channel.send(content);
 }
 
-function deleteLastMessage()
+function deleteLastMessage(channel)
 {
-    var mesg = lastMessages.pop();
-    mesg.delete()
-        .then(msg => console.log(`Deleted message from ${msg.author.username}`))
+    var mesgId = lastMessages.pop();
+    if(mesg != null)
+    {
+        channel.messages.delete(mesgId)
         .catch(console.error);
+	}
 }
 
 

@@ -73,7 +73,7 @@ client.on('message', msg => {
 			}
 
 			else if (msg.content.includes("/deleteLast")) {
-				miscCom.deleteLastMessage();
+				miscCom.deleteLastMessage(mesg.channel);
 			}
 
 
