@@ -3,6 +3,7 @@ const request = require('request');
 const cheerio = require('cheerio');
 const Discord = require('discord.js');
 const resources = require('./resources.json');
+const imageConvert = require('imgConvert');
 module.exports.randomCaps = randomCaps;
 module.exports.setLastChannel = setLastChannel;
 module.exports.handleImageSearch = handleImageSearch;
@@ -15,6 +16,8 @@ module.exports.roll = roll;
 module.exports.tell = tell;
 module.exports.reply = reply;
 module.exports.deleteLastMessage = deleteLastMessage;
+module.exports.enhanceImage = enhanceImage;
+module.exports.processAttachment = processAttachment;
 
 var LASTCHANNEL = "";
 
@@ -50,6 +53,42 @@ function reply(mesg, content)
         lastMessages.push(msg);
         console.log(msg.id);
     });
+}
+
+function enhanceImage(channel)
+{
+    channel.messages.fetch({ limit: 10 })
+        .then( messages => 
+        {
+            var attachment = "";
+            for(var i = 0; i < messages.size; i++)
+            {
+                var temp = processAttachment(messages[i].attachments);
+                if(temp != "")
+                {
+                    attachment = temp;        
+				}
+			}
+
+            if(attachment != "")
+            {
+                imageConvert.convertImage(attachment, msg.channel, imageConvert.enhance);
+			}
+
+        })
+        .catch(error => 
+        {
+            console.log(error);
+            
+        });
+}
+
+function processAttachment(attachmentCollection) {
+	var attachment = attachmentCollection.first();
+	if (attachment != null) {
+		return attachment.url;
+	}
+	return "";
 }
 
 function deleteLastMessage(channel)

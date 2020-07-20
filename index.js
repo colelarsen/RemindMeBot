@@ -102,24 +102,28 @@ client.on('message', msg => {
 			}
 
 			else if (msg.content == "image xl") {
-				var attachment = processAttachment(msg.attachments);
+				var attachment = miscCom.processAttachment(msg.attachments);
 				msg.delete();
-				imageConvert.convertImage(attachment, LASTCHANNEL, imageConvert.leftXFlip);
+				imageConvert.convertImage(attachment, msg.channel, imageConvert.leftXFlip);
 			}
 			else if (msg.content == "image xr") {
-				var attachment = processAttachment(msg.attachments);
+				var attachment = miscCom.processAttachment(msg.attachments);
 				msg.delete();
-				imageConvert.convertImage(attachment, LASTCHANNEL, imageConvert.rightXFlip);
+				imageConvert.convertImage(attachment, msg.channel, imageConvert.rightXFlip);
 			}
 			else if (msg.content == "image yt") {
-				var attachment = processAttachment(msg.attachments);
+				var attachment = miscCom.processAttachment(msg.attachments);
 				msg.delete();
-				imageConvert.convertImage(attachment, LASTCHANNEL, imageConvert.topYFlip);
+				imageConvert.convertImage(attachment, msg.channel, imageConvert.topYFlip);
 			}
 			else if (msg.content == "image yb") {
-				var attachment = processAttachment(msg.attachments);
+				var attachment = miscCom.processAttachment(msg.attachments);
 				msg.delete();
-				imageConvert.convertImage(attachment, LASTCHANNEL, imageConvert.botYFlip);
+				imageConvert.convertImage(attachment, msg.channel, imageConvert.botYFlip);
+			}
+
+			else if (msg.content == "/enhance") {
+				miscCom.enhanceImage(msg.channel);
 			}
 
 			else if (msg.content.includes("card: ")) {
@@ -173,7 +177,7 @@ client.on('message', msg => {
 		//If the bot is tagged in the message
 		if (msg.mentions.users.get(client.user.id) != null) {
 
-			var attachment = processAttachment(msg.attachments);
+			var attachment = miscCom.processAttachment(msg.attachments);
 			var incomingMessage = msg.content.split("> ")[1];
 			incomingMessage = incomingMessage.toLowerCase();
 
@@ -193,11 +197,5 @@ client.on('message', msg => {
 	}
 })
 
-function processAttachment(attachmentCollection) {
-	var attachment = attachmentCollection.first();
-	if (attachment != null) {
-		return attachment.url;
-	}
-	return "";
-}
+
 

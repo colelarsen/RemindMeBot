@@ -6,6 +6,7 @@ module.exports.leftXFlip = leftXFlip;
 module.exports.rightXFlip = rightXFlip;
 module.exports.topYFlip = topYFlip;
 module.exports.botYFlip = botYFlip;
+module.exports.enhance = enhance;
 
 
 async function convertImage(imgLink, channel, cb) {
@@ -61,5 +62,31 @@ function botYFlip(img) {
             img.setPixelColour(color, x, h - y);
         }
     }
+    return img;
+}
+
+
+function enhance(img)
+{
+    var w = img.bitmap.width;
+    var h = img.bitmap.height;
+
+
+
+    var w5 = w/5;
+    var h5 = h/5;
+
+
+    var blockW = Math.floor((Math.random() * 5));
+    var blockY = Math.floor((Math.random() * 5));
+
+    for(x = blockX*w5; x < w && x < blockX*(w5+1); x++)
+    {
+        for(y = blockY*h5; y < h && y < blockY*(h5+1); y++)
+        {
+            var color = img.getPixelColour(x, y);
+            img.setPixelColour(color, x, h - y);
+        }
+	}
     return img;
 }
