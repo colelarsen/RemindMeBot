@@ -45,9 +45,11 @@ function tell(mesg)
 var lastMessages = [];
 function reply(mesg, content)
 {
-    lastMessages.push(mesg);
-    console.log(mesg.id);
-    mesg.channel.send(content);
+    mesg.channel.send(content)
+    .then(msg => {
+        lastMessages.push(msg);
+        console.log(msg.id);
+    });
 }
 
 function deleteLastMessage(channel)
