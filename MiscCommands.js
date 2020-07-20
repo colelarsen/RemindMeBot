@@ -164,7 +164,7 @@ const GoogleImages = require('google-images');
 
 function handleImageSearch(mesg, content) {
     
-    var sniff "";
+    var sniff="";
     if(content != null)
     {
         sniff = content;
