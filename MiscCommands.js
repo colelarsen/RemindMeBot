@@ -16,6 +16,7 @@ module.exports.getHelp = getHelp;
 module.exports.roll = roll;
 module.exports.tell = tell;
 module.exports.reply = reply;
+module.exports.deleteLastMessage = deleteLastMessage;
 
 var LASTCHANNEL = "";
 
@@ -46,9 +47,20 @@ function tell(mesg)
         .catch(console.error);
 }
 
+var lastMessages = [];
+
 function reply(mesg, content)
 {
+    lastMessages.push(mesg);
     mesg.channel.send(content);
+}
+
+function deleteLastMessage()
+{
+    var mesg = lastMessages.pop();
+    mesg.delete()
+        .then(msg => console.log(`Deleted message from ${msg.author.username}`))
+        .catch(console.error);
 }
 
 

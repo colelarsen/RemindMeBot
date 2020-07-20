@@ -37,6 +37,9 @@ function startUpBot() {
 
 
 
+
+
+
 /*
 ----------------------------------------
             BOT INPUT
@@ -57,17 +60,22 @@ client.on('message', msg => {
 			}
 
 
-			if (msg.content.includes("/random")) {
+			else if (msg.content.includes("/random")) {
 				if (msg.content.startsWith("/random")) {
 					miscCom.randomCaps(msg);
 				}
 			}
 
-			if (msg.content.includes("spoiler:")) {
+			else if (msg.content.includes("spoiler:")) {
 				if (msg.content.startsWith("spoiler:")) {
 					miscCom.spoiler(msg);
 				}
 			}
+
+			else if (msg.content.includes("spoiler:")) {
+				miscCom.deleteLastMessage();
+			}
+
 
 			else if (msg.content.includes("/zalgo ")) {
 				miscCom.zalgo(msg);
