@@ -14,9 +14,9 @@ async function convertImage(imgLink, channel, cb) {
     image = await cb(image);
 
     var imgBuf = await image.getBufferAsync(Jimp.AUTO); 
-    var discordAttachment = new Discord.Attachment(imgBuf, "img.png");
+    var discordAttachment = new Discord.APIMessage(channel, {files: [imgBuf]});
 
-    channel.send({files: [discordAttachment]});
+    channel.send(discordAttachment);
 }
 
 function leftXFlip(img) {
