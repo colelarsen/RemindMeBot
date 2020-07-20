@@ -58,8 +58,9 @@ function reply(mesg, content)
 function enhanceImage(channel)
 {
     channel.messages.fetch({ limit: 10 })
-        .then( messages => 
+        .then( messageCol => 
         {
+            var messages = messageCol.array();
             console.log("got messages");
             console.log(messages);
             var attachment = "";
