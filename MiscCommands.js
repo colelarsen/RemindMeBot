@@ -3,7 +3,6 @@ const request = require('request');
 const cheerio = require('cheerio');
 const Discord = require('discord.js');
 const resources = require('./resources.json');
-
 module.exports.randomCaps = randomCaps;
 module.exports.setLastChannel = setLastChannel;
 module.exports.handleImageSearch = handleImageSearch;
@@ -12,7 +11,6 @@ module.exports.findNWords;
 module.exports.spoiler = spoiler;
 module.exports.dude = dude;
 module.exports.getHelp = getHelp;
-
 module.exports.roll = roll;
 module.exports.tell = tell;
 module.exports.reply = reply;
@@ -32,15 +30,12 @@ function roll(mesg)
 {
     var messageResponse = "";
     var number = parseInt(mesg.content.split('/roll d')[1], 10);
-    
     var messageResponse = Math.floor((Math.random() * number) + 1);
     reply(mesg, messageResponse);
-
 }
 
 function tell(mesg)
 {
-    
     reply(mesg, mesg.content.split('/tell ')[1]);
     mesg.delete()
         .then(msg => console.log(`Deleted message from ${msg.author.username}`))
@@ -48,7 +43,6 @@ function tell(mesg)
 }
 
 var lastMessages = [];
-
 function reply(mesg, content)
 {
     lastMessages.push(mesg.id);
@@ -61,7 +55,11 @@ function deleteLastMessage(channel)
     if(mesgId != null)
     {
         console.log(mesgId);
-        channel.messages.delete(mesgId, "reason");
+        channel.messages.delete(mesgId, "reason")
+        .then(res => {
+            console.log("Success deletion");
+        })
+        .catch(error => console.log(error));
 	}
 }
 
