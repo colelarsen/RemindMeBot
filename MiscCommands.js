@@ -46,6 +46,7 @@ var lastMessages = [];
 function reply(mesg, content)
 {
     lastMessages.push(mesg);
+    console.log(mesg.id);
     mesg.channel.send(content);
 }
 
@@ -54,8 +55,8 @@ function deleteLastMessage(channel)
     var mesgId = lastMessages.pop();
     if(mesgId != null)
     {
-        console.log(mesgId);
-        channel.messages.delete(mesgId, "reason")
+        console.log(mesgId.id);
+        channel.messages.delete(mesgId.id, "reason")
         .then( del => console.log("delete Success"))
         .catch(error => 
         {
