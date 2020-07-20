@@ -76,7 +76,7 @@ function enhanceImage(channel)
             if(attachment != "")
             {
                 console.log("got attachment");
-                imageConvert.convertImage(attachment, msg.channel, imageConvert.enhance);
+                imageConvert.convertImage(attachment, channel, imageConvert.enhance);
 			}
 
         })
