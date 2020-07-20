@@ -11,6 +11,8 @@
         "item: <input>": "Looks up the highest obtain rate for the <input> in MHGU",
         "weapon: <weaponType>: <quantity>: <attributes (', ' seperated)>: <sort by (', ' seperated)>": "Returns a list of weapon from MHGU with the specified information.",
         "ping": "Pongs",
+        "/roll d<input>": "Where <input> is any number, rolls from 1 to that number",
+        "/tell <input>": "Sends a message to the same channel with the bot where text is the input",
         "get id": "Returns the user id",
         "OH SHIT": "A RAT",
         "@RemindMeBot remind me: <date>@@<info>": "Sets a reminder to remind the user via DM of <info> at <date>",
