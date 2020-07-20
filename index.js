@@ -74,6 +74,9 @@ client.on('message', msg => {
 
 			else if (msg.content.includes("/deleteLast")) {
 				miscCom.deleteLastMessage(msg.channel);
+				msg.delete()
+				.then(mesg => console.log(`Deleted message from ${mesg.author.username}`))
+				.catch(console.error);
 			}
 
 
