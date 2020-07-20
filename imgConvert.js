@@ -68,13 +68,12 @@ function botYFlip(img) {
 
 function enhance(img)
 {
+    
+    await image.resize(150, 150);
     var w = img.bitmap.width;
     var h = img.bitmap.height;
 
 
-
-    var w5 = w/5;
-    var h5 = h/5;
 
 
     var blockW = Math.floor((Math.random() * 5));
@@ -82,13 +81,12 @@ function enhance(img)
 
     console.log(blockW + ":" + blockY + ":" + w + ":" + h);
 
-    for(x = blockW*w5; x < w && x < blockW*(w5+1); x++)
-    {
-        for(y = blockY*h5; y < h && y < blockY*(h5+1); y++)
-        {
-            var color = img.getPixelColour(x, y);
-            img.setPixelColour(color, x, h - y);
-        }
-	}
+
+    //3:2:512:512
+
+    var xstart = w/5*blockW;
+    var ystart = h/5*blockY;
+
+    await img.crop(xstart, ystart, w/5, w/5);
     return img;
 }
