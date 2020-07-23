@@ -250,12 +250,15 @@ function handleImageSearch(mesg, content) {
     client.search(sniff)
         .then(images => {
             let index = Math.round(Math.random()*images.length);
+            
             var embed = new Discord.MessageEmbed()
                 .setColor(3447003)
                 .setTitle(sniff)
                 .setImage(images[index].url)
                 .setDescription(" ");
-            reply(mesg, embed);
+
+            var message = new Discord.APIMessage(channel, {embed: [embed]});
+            reply(mesg, message);
         })
         .catch((err) => { console.log(err) });
 }
