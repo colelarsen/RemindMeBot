@@ -251,7 +251,7 @@ function handleImageSearch(mesg, content) {
         .then(images => {
             let index = Math.round(Math.random()*images.length);
             
-            imgConvert.convertImage(images[index].url, mesg.channel, imgConvert.noChange);
+            imageConvert.convertImage(images[index].url, mesg.channel, imageConvert.noChange);
         })
         .catch((err) => { console.log(err) });
 }
