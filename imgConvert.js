@@ -7,6 +7,7 @@ module.exports.rightXFlip = rightXFlip;
 module.exports.topYFlip = topYFlip;
 module.exports.botYFlip = botYFlip;
 module.exports.enhance = enhance;
+module.exports.noChange = noChange;
 
 
 async function convertImage(imgLink, channel, cb) {
@@ -17,6 +18,11 @@ async function convertImage(imgLink, channel, cb) {
     var discordAttachment = new Discord.APIMessage(channel, {files: [imgBuf]});
 
     channel.send(discordAttachment);
+}
+
+function noChange(img)
+{
+    return img;
 }
 
 function leftXFlip(img) {
