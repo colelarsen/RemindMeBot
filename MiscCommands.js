@@ -190,7 +190,7 @@ function spoiler(mesg)
 function dude(mesg)
 {
     reply(mesg, "HAHA DUDE WEED");
-    handleImageSearch(mesg);
+    handleImageSearch(mesg,  "HAHA DUDE");
     reply(mesg, "HAHA DUDE");
 }
 
@@ -241,7 +241,7 @@ function handleImageSearch(mesg, content) {
 	}
     else
     {
-     sniff = mesg.content.split("image: ")[1];
+        sniff = mesg.content.split("image: ")[1];
 	}
     
     
