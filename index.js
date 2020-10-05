@@ -68,6 +68,14 @@ client.on('message', msg => {
 				miscCom.reply(msg, message);
 			}
 
+			else if (msg.content.includes("/randomMesageForce")) {
+				let rawdata = fs.readFileSync('randomMessages.json');
+				let messages = JSON.parse(rawdata);
+				var randomMessages = messages.messages;
+				var message = randomMessages[Math.floor(Math.random()*randomMessages.length)];
+				miscCom.reply(msg, message);
+			}
+
 
 			else if (msg.content.includes("/random")) {
 				if (msg.content.startsWith("/random")) {
