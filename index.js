@@ -7,7 +7,7 @@ const miscCom = require('./MiscCommands.js');
 const gunScrape = require('./scrapeGungeon');
 const imageConvert = require('./imgConvert');
 const cardScrape = require('./scrapeYugioh.js');
-
+const fs = require('fs');
 
 /*
 ----------------------------------------
@@ -25,8 +25,11 @@ client.on('ready', () => {
 	console.log(`Logged in as ${client.user.tag}!`);
 });
 
-//Start the bot
+// //Start the bot
 var startUp = setTimeout(startUpBot, 5000);
+
+
+
 function startUpBot() {
 	var intervalID = setInterval(() => { reminder.checkTimes(client); }, 10000);
 }
@@ -46,6 +49,8 @@ function startUpBot() {
 ----------------------------------------
 */
 
+
+
 var LASTCHANNEL;
 //If you get a message
 client.on('message', msg => {
@@ -56,7 +61,11 @@ client.on('message', msg => {
 			var rand = Math.floor((Math.random() * 1000) + 1);
 			if(rand == 1)
 			{
-				miscCom.reply(msg, "i love reisen");
+				let rawdata = fs.readFileSync('randomMessages.json');
+				let messages = JSON.parse(rawdata);
+				var randomMessages = messages.messages;
+				var message = randomMessages[Math.floor(Math.random()*randomMessages.length)];
+				miscCom.reply(msg, message);
 			}
 
 
@@ -196,6 +205,3 @@ client.on('message', msg => {
 		// LASTCHANNEL.send('' + error);
 	}
 })
-
-
-
