@@ -1,7 +1,8 @@
 
 const axios = require('axios');
 const config = require('./config.js');
-
+const helper = require('./helper.js');
+const miscCom = require('./MiscCommands');
 
 class Reminder {
     constructor(info, timestamp, username, userID, attachment, successMessage, failureMessage, authKey, ownerUsername, isPrivate) {
@@ -47,6 +48,7 @@ async function getAllReminders() {
             return new Reminder(remObj.info, remObj.timestamp, remObj.username, remObj.userID, remObj.attachment, remObj.id, "", "", remObj.authKey, remObj.ownerUsername, false);
         });
         await sleep(10000);
+        // console.log(reminders);
         return reminders;
     }
     catch (err) {
@@ -59,12 +61,28 @@ function sleep(ms){
     })
 }
 
-async function storeReminder(reminder) {
+async function storeReminder(reminder, message) {
     try {
         let response = await axios.post("http://remindmehome.com/reminders/reminderbotpost/", reminder);
+        try
+        {
+            if(response.data.successMessage == 'Successfully added!') helper.react(message, true);
+            else
+            {
+                helper.react(message, false);
+            }
+            
+        }
+        catch(e)
+        {
+            helper.react(message, false);
+        }
+        
+        //console.log(response);
     }
     catch (err) {
         console.log(err);
+        helper.react(message, false);
     }
 }
 
@@ -82,20 +100,32 @@ async function listReminders() {
 
 
 //Taken an incoming message and the Author and returns a response
-function remindMeStart(incomingMessage, userID, attachment, username) {
+function remindMeStart(incomingMessage, userID, attachment, username, messageObj) {
     try {
         var messageLowerCase = incomingMessage.toLowerCase();
-        var split = messageLowerCase.split("remind me: ");
-        var timestamp = findTimestamp(split[1].split("@@")[0]);
-        var info = incomingMessage.split("@@")[1];
+        var split = "";
+        if (incomingMessage.startsWith("/remind "))
+        {
+            split = messageLowerCase.split("/remind ")[1];
+        }
+        else if(incomingMessage.startsWith("/r "))
+        {
+            split = messageLowerCase.split("/r ")[1];
+        }
+
+        
+        var timestamp = findTimestamp(split.split("[")[1].slice(0, split.split("[")[1].length-1));
+        var info = split.split("[")[0];
+
+
         var reminder = new Reminder(info, timestamp, username, userID, attachment, "", "", "", "", "", false);
         if (attachment.length > 0) {
             reminder.attachment = attachment;
         }
-        storeReminder(reminder);
+        storeReminder(reminder, messageObj);
     }
     catch (err) {
-        console.log(err.message);
+        console.log(err);
         // return "Sorry there was an error";
     }
 }
@@ -110,13 +140,14 @@ function remindMeStart(incomingMessage, userID, attachment, username) {
 async function checkTimes(client) {
     try {
         let reminders = await getAllReminders();
-        reminders.forEach((reminder) => {
+        reminders.forEach(async (reminder) => {
             if (Date.now() > reminder.timestamp) {
+                console.log(reminder);
                 let userid = reminder.userID;
-                var user = client.users.find("id", userid);
-                if (user == null) {
-                    user = client.users.find("username", reminder.username);
-                }
+                
+                var user = await client.users.fetch(userid);
+
+                console.log("USER: " + user.id);
 
                 var dmChan = user.createDM();
                 dmChan.then(chan => {

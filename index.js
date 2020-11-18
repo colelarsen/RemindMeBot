@@ -7,6 +7,7 @@ const miscCom = require('./MiscCommands.js');
 const gunScrape = require('./scrapeGungeon');
 const imageConvert = require('./imgConvert');
 const cardScrape = require('./scrapeYugioh.js');
+const helper = require('./helper.js');
 const fs = require('fs');
 
 /*
@@ -21,7 +22,7 @@ client.login(config.getLogon())
 	.catch(console.err);
 
 
-client.on('ready', () => {
+client.on('ready', async () => {
 	console.log(`Logged in as ${client.user.tag}!`);
 });
 
@@ -91,9 +92,7 @@ client.on('message', msg => {
 
 			else if (msg.content.includes("/deleteLast")) {
 				miscCom.deleteLastMessage(msg.channel);
-				msg.delete()
-				.then(mesg => console.log(`Deleted message from ${mesg.author.username}`))
-				.catch(console.error);
+				msg.delete();
 			}
 
 
@@ -188,21 +187,21 @@ client.on('message', msg => {
 			else if (msg.content === 'OH SHIT') {
 				miscCom.reply(msg, 'A RAT');
 			}
+			else if (msg.content.startsWith("/remind") || msg.content.startsWith("/r")) {
+				var attachment = miscCom.processAttachment(msg.attachments);
+				reminder.remindMeStart(msg.content, msg.author.id, attachment, msg.author.username, msg);
+			}
 
 
 		}
 		//If the bot is tagged in the message
 		if (msg.mentions.users.get(client.user.id) != null) {
 
-			var attachment = miscCom.processAttachment(msg.attachments);
+			
 			var incomingMessage = msg.content.split("> ")[1];
 			incomingMessage = incomingMessage.toLowerCase();
 
-			if (incomingMessage.includes("remind me:")) {
-				var respond = reminder.remindMeStart(msg.content, msg.author.id, attachment, msg.author.username);
-				console.log(msg.author.id);
-			}
-			else if(incomingMessage.includes("help"))
+			if(incomingMessage.includes("help"))
 			{
 				msg.reply(miscCom.getHelp());
 			}

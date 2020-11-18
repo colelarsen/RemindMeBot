@@ -1,6 +1,7 @@
 
 var Jimp = require('jimp');
 const Discord = require('discord.js');
+const miscComs = require('./MiscCommands');
 module.exports.convertImage = convertImage;
 module.exports.leftXFlip = leftXFlip; 
 module.exports.rightXFlip = rightXFlip;
@@ -11,13 +12,23 @@ module.exports.noChange = noChange;
 
 
 async function convertImage(imgLink, channel, cb) {
-    var image = await Jimp.read(imgLink)
-    image = await cb(image);
+    try
+    {
+        console.log(imgLink);
+        var image = await Jimp.read(imgLink)
+        image = await cb(image);
 
-    var imgBuf = await image.getBufferAsync(Jimp.AUTO); 
-    var discordAttachment = new Discord.APIMessage(channel, {files: [imgBuf]});
-
-    channel.send(discordAttachment);
+        var imgBuf = await image.getBufferAsync(Jimp.AUTO); 
+        var discordAttachment = new Discord.MessageAttachment(imgBuf);
+            
+        miscComs.send(discordAttachment, channel);
+    }
+    catch(e)
+    {
+        console.log(e);
+        miscComs.send("Task failed successfully: " + imgLink, channel);
+    }
+    
 }
 
 function noChange(img)

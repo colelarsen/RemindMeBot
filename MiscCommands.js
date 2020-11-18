@@ -4,6 +4,7 @@ const cheerio = require('cheerio');
 const Discord = require('discord.js');
 const resources = require('./resources.json');
 const imageConvert = require('./imgConvert.js');
+const helper = require('./helper.js');
 module.exports.randomCaps = randomCaps;
 module.exports.setLastChannel = setLastChannel;
 module.exports.handleImageSearch = handleImageSearch;
@@ -15,6 +16,7 @@ module.exports.getHelp = getHelp;
 module.exports.roll = roll;
 module.exports.tell = tell;
 module.exports.reply = reply;
+module.exports.send = send;
 module.exports.deleteLastMessage = deleteLastMessage;
 module.exports.enhanceImage = enhanceImage;
 module.exports.processAttachment = processAttachment;
@@ -49,6 +51,14 @@ var lastMessages = [];
 function reply(mesg, content)
 {
     mesg.channel.send(content)
+    .then(msg => {
+        lastMessages.push(msg);
+        console.log(msg.id);
+    });
+}
+function send(content, channel)
+{
+    channel.send(content)
     .then(msg => {
         lastMessages.push(msg);
         console.log(msg.id);
@@ -105,7 +115,6 @@ function deleteLastMessage(channel)
         .then( del => {
             console.log("fetch Success");
             channel.messages.delete(mesgId, "reason")
-            .then(msg => console.log(`Deleted message from ${msg.author.username}`))
             .catch(error => 
             {
                 console.log(error)
@@ -249,10 +258,21 @@ function handleImageSearch(mesg, content) {
     var client = new GoogleImages('001240387052449260152:yrizystafyw', 'AIzaSyA2U3DQF9AHMofsy2CtoP035jg-S1BP6Yc');
     client.search(sniff)
         .then(images => {
-            let index = Math.round(Math.random()*images.length);
+            if(images.length == 0)
+            {
+                helper.react(mesg, false);
+            }
+            else
+            {
+                let index = Math.round(Math.random()*images.length);
             
-            imageConvert.convertImage(images[index].url, mesg.channel, imageConvert.noChange);
+                imageConvert.convertImage(images[index].url, mesg.channel, imageConvert.noChange);
+            }
+            
         })
-        .catch((err) => { console.log(err) });
+        .catch((err) => { 
+            helper.react(mesg, false);
+            console.log(err) 
+        });
 }
 
