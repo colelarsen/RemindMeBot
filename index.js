@@ -9,6 +9,7 @@ const imageConvert = require('./imgConvert');
 const cardScrape = require('./scrapeYugioh.js');
 const helper = require('./helper.js');
 const fs = require('fs');
+const { exec } = require("child_process");
 
 /*
 ----------------------------------------
@@ -75,6 +76,21 @@ client.on('message', msg => {
 				var randomMessages = messages.messages;
 				var message = randomMessages[Math.floor(Math.random()*randomMessages.length)];
 				miscCom.reply(msg, message);
+			}
+
+			else if(msg.content.includes("/deployBingus"))
+			{
+				exec("../bingus/pullLaunch.sh", (error, stdout, stderr) => {
+					if (error) {
+						console.log(`error: ${error.message}`);
+						return;
+					}
+					if (stderr) {
+						console.log(`stderr: ${stderr}`);
+						return;
+					}
+					console.log(`stdout: ${stdout}`);
+				});
 			}
 
 
