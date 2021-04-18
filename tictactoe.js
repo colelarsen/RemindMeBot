@@ -105,7 +105,7 @@ function makeMove(mesg)
     }
     else
     {
-        miscCom.send("THE WINNER WAS: " + w, mesg.channel);
+        miscCom.send(printBoard(board) + "\n\nTHE WINNER WAS: " + w, mesg.channel);
     }
 }
 
