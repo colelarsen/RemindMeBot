@@ -10,6 +10,8 @@ var boardSize = 9;
 startGame();
 function startGame()
 {
+    rows = [];
+    board = [];
     for(i = 0; i < boardSize; i++)
     {
         for(j = 0; j < boardSize; j++)
