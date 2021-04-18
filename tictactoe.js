@@ -68,16 +68,14 @@ function getPiece(currentPiece)
     return ret;
 }
 
-
+var turn = 0;
 function makeMove(mesg)
 {
-
     var column = mesg.content.split('/tic ')[1];
-    var i = 0;
     if(gameOver(board) == 0)
     {
         var piece = " x ";
-        if(i % 2 == 0)
+        if(turn % 2 == 0)
         {
             piece = " o "
         }
@@ -86,7 +84,7 @@ function makeMove(mesg)
         if(column >= 1 && column <= 9)
         {
             putPiece(board, (column-1), piece);
-            i++;
+            turn++;
         }
     }
 
