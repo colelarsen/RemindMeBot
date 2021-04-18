@@ -11,6 +11,8 @@ const helper = require('./helper.js');
 const fs = require('fs');
 const { exec } = require("child_process");
 
+const tic = require('./tictactoe.js');
+
 /*
 ----------------------------------------
             STARTUP BOT
@@ -114,6 +116,12 @@ client.on('message', msg => {
 
 			else if (msg.content.includes("/zalgo ")) {
 				miscCom.zalgo(msg);
+			}
+			else if (msg.content.includes("/startTicTac")) {
+				tic.startGame();
+			}
+			else if (msg.content.includes("/tic ")) {
+				tic.makeMove(msg);
 			}
 			else if (msg.content.includes("/tell ")) {
 				miscCom.tell(msg);
